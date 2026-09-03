@@ -1,0 +1,16 @@
+# Внутренние документы разработки
+/architecture.md
+/memory.md
+/spec.md
+/SPEECH_NOTES.md
+/todo.md
+
+# Сгенерированные демо-артефакты (пересоздаются: ruby src/main.rb)
+/routing_decisions.json
+/routing_report.json
+/routing_decisions_probe.json
+/routing_report_probe.json
+
+# Временные файлы
+*.log
+*.tmp

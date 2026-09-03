@@ -1,0 +1,39 @@
+# Конфигурация правил роутинга.
+# Этап 2: веса soft-стратегий + доопределяемые поля (объём, диапазоны, обязательства).
+
+gateway: RUB_SBP_WITHDRAW
+merchant: alpha_market
+
+# Активная стратегия выбора среди допустимых провайдеров:
+#   weighted — взвешенная сумма soft-факторов (см. architecture.md §4.2)
+active_strategy: weighted
+
+# Веса soft-стратегий (сумма = 1.0)
+weights:
+  count_share: 0.30
+  volume_share: 0.20
+  conversion: 0.15
+  cascade: 0.15
+  amount_range: 0.10
+  turnover: 0.10
+
+# Правило разрешения ничьей
+tie_break: priority
+
+# Доопределяемые поля провайдеров (отсутствуют в providers.json)
+overrides:
+  vipay:
+    volume_share_pct: 40
+    amount_range_min: 50001
+    amount_range_max: 100000
+  payflow:
+    volume_share_pct: 35
+    daily_turnover_min: 2000000
+    amount_range_min: 500
+    amount_range_max: 50000
+  quickpay:
+    volume_share_pct: 25
+    amount_range_min: 100001
+    amount_range_max: 200000
+  spacepayments:
+    volume_share_pct: 0
