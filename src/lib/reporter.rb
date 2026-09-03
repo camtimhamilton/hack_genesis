@@ -3,6 +3,12 @@
 # Аналитика по результатам роутинга: доли (count/volume), причины skip,
 # успешность/отказы, использование лимитов и рекомендации по изменению правил.
 class Reporter
+  HARD_SKIP_REASONS = %w[
+    inactive_provider amount_exceeds_limit amount_below_minimum daily_limit_exceeded
+    in_progress_limit_exceeded no_available_requisites negative_margin bank_not_in_list
+    rate_limit_exceeded
+  ].freeze
+
   def initialize(period: nil, gateway: nil, merchant: nil, strategy: nil)
     @period = period
     @gateway = gateway
@@ -22,7 +28,8 @@ class Reporter
       'skip_reasons' => skip_reasons(decisions),
       'results' => results(decisions),
       'projected_daily_utilization' => utilization(providers),
-      'recommendations' => recommendations(decisions, providers, queue)
+      'recommendations' => recommendations(decisions, providers, queue),
+      'unachieved_goals' => unachieved_goals(decisions, providers)
     }
   end
 
@@ -153,7 +160,49 @@ class Reporter
       recs << format('%s: закончились реквизиты — пополнить available_requisites', name) if (p.available_requisites || 0) <= 0
     end
 
+    # 5) цели, которые невозможно выполнить при текущих ограничениях
+    unachieved_goals(decisions, providers).each do |ug|
+      recs << format('%s: цель %.0f%% недостижима при текущих ограничениях (доступен в %d/%d = %.1f%%) — пересмотреть лимиты/banks или снизить traffic_percentage',
+                     ug['provider'], ug['target_pct'], ug['eligible_operations'], ug['total_operations'], ug['achievable_share_pct'])
+    end
+
     recs
+  end
+
+  # Цели, которые невозможно выполнить: у провайдера положительная целевая доля,
+  # но он исключался hard-ограничениями, поэтому даже 100% доступных операций
+  # не дотянут до целевой доли.
+  def unachieved_goals(decisions, providers)
+    total = decisions.size
+    external_providers(providers).filter_map do |p|
+      name = p.payment_system
+      target = p.traffic_percentage.to_f
+      next unless target.positive?
+
+      hard_skips = 0
+      reasons = Hash.new(0)
+      decisions.each do |d|
+        d['attempts'].each do |a|
+          next unless a['provider'] == name && a['decision'] == 'skipped'
+          next unless HARD_SKIP_REASONS.include?(a['reason'])
+
+          hard_skips += 1
+          reasons[a['reason']] += 1
+        end
+      end
+
+      eligible = total - hard_skips
+      next if eligible.to_f / total >= target / 100.0
+
+      {
+        'provider' => name,
+        'target_pct' => target,
+        'eligible_operations' => eligible,
+        'total_operations' => total,
+        'achievable_share_pct' => round1(eligible.to_f * 100.0 / total),
+        'skip_reasons' => reasons
+      }
+    end
   end
 
   def pct(part, whole)

@@ -55,7 +55,7 @@ class Router
     end
 
     reason = selected_reason(selected, external.size)
-    attempts = build_attempts(results, selected, reason, rejected)
+    attempts = build_attempts(results, ranked, selected, reason, rejected, op, ctx)
 
     apply_state!(selected, op, ctx) if selected && final_status == 'approved'
 
@@ -77,10 +77,17 @@ class Router
     external_count == 1 ? 'only_eligible_provider' : 'first_eligible'
   end
 
-  def build_attempts(results, selected, reason, rejected)
+  # Объяснимость: для каждого рассмотренного провайдера фиксируем причину.
+  # hard-отсев → skip_reason; runtime-отказ → rejected/expired;
+  # допущен, но не выбран → lower_score (с указанием score).
+  def build_attempts(results, ranked, selected, reason, rejected, op, ctx)
+    scores = ranked.to_h { |p, s| [p.payment_system, s] }
+
     results.each_with_object([]) do |(p, ok, skip_reason, details), acc|
       if p == selected
-        acc << { 'provider' => p.payment_system, 'decision' => 'selected', 'reason' => reason }
+        entry = { 'provider' => p.payment_system, 'decision' => 'selected', 'reason' => reason }
+        entry['details'] = selection_details(p, reason, op, ctx)
+        acc << entry
       elsif !ok
         entry = { 'provider' => p.payment_system, 'decision' => 'skipped', 'reason' => skip_reason }
         entry['details'] = details if details
@@ -89,9 +96,19 @@ class Router
         status = rejected[p]
         acc << { 'provider' => p.payment_system, 'decision' => 'skipped',
                  'reason' => status == 'expired' ? 'expired_by_provider' : 'rejected_by_provider' }
+      elsif p.payment_system != FALLBACK
+        acc << { 'provider' => p.payment_system, 'decision' => 'skipped', 'reason' => 'lower_score',
+                 'details' => "score=#{format('%.3f', scores.fetch(p.payment_system, 0.0))} ниже выбранного" }
       end
-      # ok, не выбран и не отклонён → не попадает в attempts
+      # spacepayments (fallback) не выбран → не попадает в attempts
     end
+  end
+
+  def selection_details(provider, reason, op, ctx)
+    return 'fallback: пул допустимых внешних провайдеров пуст' if provider.payment_system == FALLBACK
+    return 'единственный допустимый внешний провайдер' if reason == 'only_eligible_provider'
+
+    @scorer.explain(provider, op, ctx)
   end
 
   def apply_state!(provider, op, ctx)

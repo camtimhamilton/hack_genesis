@@ -12,10 +12,11 @@ active_strategy: weighted
 weights:
   count_share: 0.30
   volume_share: 0.20
-  conversion: 0.15
-  cascade: 0.15
-  amount_range: 0.10
+  conversion: 0.12
+  cascade: 0.12
+  amount_range: 0.08
   turnover: 0.10
+  rate_limit: 0.08
 
 # Правило разрешения ничьей
 tie_break: priority
@@ -26,14 +27,17 @@ overrides:
     volume_share_pct: 40
     amount_range_min: 50001
     amount_range_max: 100000
+    requests_per_minute_limit: 15
   payflow:
     volume_share_pct: 35
     daily_turnover_min: 2000000
     amount_range_min: 500
     amount_range_max: 50000
+    requests_per_minute_limit: 10
   quickpay:
     volume_share_pct: 25
     amount_range_min: 100001
     amount_range_max: 200000
+    requests_per_minute_limit: 20
   spacepayments:
     volume_share_pct: 0

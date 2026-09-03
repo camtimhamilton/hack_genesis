@@ -37,6 +37,24 @@ class Scorer
     @strategies.sum { |s| weight_for(s.key) * s.score(provider, op, ctx) }
   end
 
+  # Детализированный разбор score для объяснимости решений.
+  def score_breakdown(provider, op, ctx)
+    factors = @strategies.each_with_object({}) do |s, acc|
+      w = weight_for(s.key)
+      raw = s.score(provider, op, ctx)
+      acc[s.key] = { 'raw' => round3(raw), 'weight' => w, 'weighted' => round3(w * raw) }
+    end
+    { 'total' => round3(factors.values.sum { |f| f['weighted'] }), 'factors' => factors }
+  end
+
+  # Компактное текстовое объяснение выбора (для attempts[].details).
+  def explain(provider, op, ctx)
+    breakdown = score_breakdown(provider, op, ctx)
+    parts = breakdown['factors'].reject { |_k, f| f['weighted'].zero? }
+                                .map { |k, f| "#{k}=#{format('%.3f', f['weighted'])}" }
+    "score=#{format('%.3f', breakdown['total'])} [#{parts.join(', ')}]"
+  end
+
   private
 
   def weight_for(key)
@@ -45,5 +63,9 @@ class Scorer
 
   def tie_value(provider)
     @tie_break == 'priority' ? provider.priority.to_i : 0
+  end
+
+  def round3(value)
+    (value.to_f * 1000).round / 1000.0
   end
 end

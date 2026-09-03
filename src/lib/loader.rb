@@ -6,6 +6,8 @@ require_relative 'provider'
 
 # Загрузчик входных данных из src/data.
 class Loader
+  class DataError < StandardError; end
+
   DATA_DIR = File.expand_path('../data', __dir__)
 
   def initialize(data_dir: DATA_DIR, queue_filename: 'operations_queue_10.json')
@@ -53,6 +55,11 @@ class Loader
 
   def read_json(filename)
     path = File.join(@data_dir, filename)
-    JSON.parse(File.read(path, encoding: 'UTF-8'))
+    content = File.read(path, encoding: 'UTF-8')
+    JSON.parse(content)
+  rescue Errno::ENOENT
+    raise DataError, "Файл входных данных не найден: #{path}"
+  rescue JSON::ParserError => e
+    raise DataError, "Некорректный JSON в файле #{path}: #{e.message}"
   end
 end

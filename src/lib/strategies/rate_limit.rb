@@ -4,6 +4,8 @@ require 'time'
 require_relative 'base'
 
 # Стратегия 6: интенсивность (rate-limit на провайдера).
+# Мягкий сигнал: чем больше загрузка текущей минуты относительно лимита,
+# тем ниже приоритет (загрузка влияет на выбор, а не только отсекает).
 class RateLimitStrategy < BaseStrategy
   KEY = 'rate_limit'
 
@@ -12,7 +14,7 @@ class RateLimitStrategy < BaseStrategy
     return 0.5 if limit.nil? || limit.to_i <= 0
 
     used = provider.requests_in_minute(parse_time(op['created_at']))
-    used.to_i >= limit.to_i ? 0.0 : 1.0
+    clamp(1.0 - (used.to_f / limit.to_f))
   end
 
   private

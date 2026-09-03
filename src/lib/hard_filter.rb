@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'time'
+
 # Hard-constraints: определяет, может ли провайдер обработать операцию.
 # Возвращает [ok, reason, details]. Логика соответствует eligible_providers
 # из src/scripts/validate_10.rb.
@@ -57,6 +59,20 @@ class HardFilter
       end
     end
 
+    limit = provider.requests_per_minute_limit
+    if limit && provider.requests_in_minute(parse_time(op['created_at'])).to_i >= limit.to_i
+      return [false, 'rate_limit_exceeded',
+              "requests_per_minute #{provider.requests_in_minute(parse_time(op['created_at']))} >= #{limit}"]
+    end
+
     [true, nil, nil]
+  end
+
+  private
+
+  def parse_time(str)
+    Time.parse(str.to_s)
+  rescue StandardError
+    Time.now
   end
 end
