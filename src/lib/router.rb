@@ -74,7 +74,7 @@ class Router
     return nil if selected.nil?
     return 'fallback_self_provider' if selected.payment_system == FALLBACK
 
-    external_count == 1 ? 'only_eligible_provider' : 'first_eligible'
+    external_count == 1 ? 'only_eligible_provider' : 'highest_score'
   end
 
   # Объяснимость: для каждого рассмотренного провайдера фиксируем причину.
