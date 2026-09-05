@@ -9,6 +9,11 @@ class Reporter
     rate_limit_exceeded
   ].freeze
 
+  # Порог утилизации дневного лимита, после которого генерируется рекомендация.
+  NEAR_LIMIT_THRESHOLD_PCT = 90.0
+  # Запас ёмкости (headroom), закладываемый в рекомендуемый лимит.
+  LIMIT_HEADROOM = 0.30
+
   def initialize(period: nil, gateway: nil, merchant: nil, strategy: nil)
     @period = period
     @gateway = gateway
@@ -143,14 +148,12 @@ class Reporter
       name = p.payment_system
       share = pct(counts.fetch(name, 0), total)
       dev = share - p.traffic_percentage.to_f
-
-      # 1) дневной лимит почти исчерпан
       limit = p.daily_amount_limit
       util = limit.to_f.positive? ? (p.daily_approved_amount.to_f * 100.0 / limit) : nil
-      if util && util >= 90.0
-        recs << format('%s: дневной лимит почти исчерпан (%d/%d = %.1f%%) — увеличить daily_amount_limit или снизить traffic_percentage (%d)',
-                       name, p.daily_approved_amount, limit, util, p.traffic_percentage)
-      end
+
+      # 1) дневной лимит почти исчерпан → конкретный дефицит и целевой лимит
+      rec = limit_recommendation(name, p, decisions, total)
+      recs << rec if rec
 
       # 2) концентрация объёма
       vshare = pct(vol[name], total_vol)
@@ -161,7 +164,7 @@ class Reporter
       end
 
       # 3) отклонение count-доли
-      if dev <= -10.0 && (util.nil? || util < 90.0)
+      if dev <= -10.0 && (util.nil? || util < NEAR_LIMIT_THRESHOLD_PCT)
         recs << format('%s: недобор доли (share %.1f%% < target %.0f%%) — увеличить traffic_percentage или снизить priority',
                        name, share, p.traffic_percentage.to_f)
       elsif dev >= 10.0
@@ -216,6 +219,68 @@ class Reporter
         'skip_reasons' => reasons
       }
     end
+  end
+
+  # Рекомендация по дневному лимиту с конкретными числами (O(1) по времени):
+  # дефицит экстраполируется из текущей утилизации, целевой лимит считается
+  # как объём с запасом LIMIT_HEADROOM, доля ухода в каскад — по attempts.
+  def limit_recommendation(name, provider, decisions, total)
+    limit = provider.daily_amount_limit
+    return nil unless limit.to_f.positive?
+
+    used = provider.daily_approved_amount.to_f
+    util = used * 100.0 / limit
+    return nil if util < NEAR_LIMIT_THRESHOLD_PCT
+
+    cascade_count = limit_cascade_count(decisions, name)
+    cascade_pct = pct(cascade_count, total)
+
+    recommended = ceil_significant(used / (1.0 - LIMIT_HEADROOM))
+    recommended = ceil_significant(limit * (1.0 + LIMIT_HEADROOM)) if recommended <= limit
+    increase_pct = (recommended.to_f / limit - 1.0) * 100.0
+
+    tail = if cascade_count.positive?
+             "чтобы предотвратить уход #{cascade_pct.round}% операций в каскад"
+           else
+             'чтобы сохранить запас по дневному лимиту'
+           end
+
+    format('%s: лимит исчерпан на %.1f%% (%s/%s ₽) — рекомендуется увеличить daily_amount_limit до %s ₽ (+%d%%), %s',
+           name, round1(util), money(used), money(limit), money(recommended), increase_pct.round, tail)
+  end
+
+  # Количество операций, где провайдер был отсечён именно исчерпанием дневного лимита.
+  def limit_cascade_count(decisions, name)
+    decisions.count do |d|
+      d['attempts'].any? do |a|
+        a['provider'] == name && a['decision'] == 'skipped' && a['reason'] == 'daily_limit_exceeded'
+      end
+    end
+  end
+
+  # Компактный денежный формат: 2 988 800 → "2.99M", 950 000 → "950k".
+  def money(value)
+    v = value.to_f
+    if v >= 1_000_000
+      "#{trim2(v / 1_000_000)}M"
+    elsif v >= 1_000
+      "#{trim2(v / 1_000)}k"
+    else
+      v.round.to_s
+    end
+  end
+
+  def trim2(x)
+    format('%.2f', x).sub(/0\z/, '').sub(/\.\z/, '')
+  end
+
+  # Округление вверх до двух значащих цифр (4 269 714 → 4 300 000).
+  def ceil_significant(value)
+    v = value.to_f
+    return v if v <= 0
+
+    factor = 10**(Math.log10(v).floor - 1)
+    (v / factor).ceil * factor
   end
 
   def pct(part, whole)

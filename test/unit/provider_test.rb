@@ -45,6 +45,12 @@ class ProviderTest < Minitest::Test
     assert_equal 0, p.available_requisites
   end
 
+  def test_drain_requisites_zeroes_pool
+    p = fixture_provider('available_requisites' => 12)
+    p.drain_requisites!
+    assert_equal 0, p.available_requisites
+  end
+
   def test_register_request_buckets_by_minute
     p = fixture_provider
     t1 = Time.parse('2026-07-30T09:00:10+03:00')

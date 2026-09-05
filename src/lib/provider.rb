@@ -175,6 +175,12 @@ class Provider
     @state[:available_requisites] = current - 1 if current.positive?
   end
 
+  # Хаос-инъекция: обнулить пул свободных реквизитов (chaos_test.rb).
+  def drain_requisites!
+    @state[:available_requisites] = 0
+    self
+  end
+
   def register_request!(time)
     @request_buckets[time.strftime('%Y-%m-%d %H:%M')] += 1
   end

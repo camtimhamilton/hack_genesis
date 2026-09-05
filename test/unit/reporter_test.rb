@@ -89,6 +89,23 @@ class ReporterTest < Minitest::Test
     assert report['recommendations'].any? { |r| r.include?('daily_amount_limit') }
   end
 
+  def test_recommendation_reports_exact_deficit
+    p = fixture_provider('payment_system' => 'payflow', 'traffic_percentage' => 35,
+                         'daily_amount_limit' => 3_000_000, 'daily_approved_amount' => 2_988_800)
+    decisions = [decision('op1', 'quickpay', attempts: [
+                            { 'provider' => 'payflow', 'decision' => 'skipped', 'reason' => 'daily_limit_exceeded' }
+                          ])]
+    queue = [{ 'operation_id' => 'op1', 'amount' => 100 }]
+    report = Reporter.new.build(decisions, [p], queue)
+    rec = report['recommendations'].find { |r| r.include?('лимит исчерпан') }
+    refute_nil rec, 'ожидалась рекомендация с точным дефицитом лимита'
+    assert rec.include?('99.6%')
+    assert rec.include?('2.99M/3.0M ₽')
+    assert rec.include?('4.3M ₽')
+    assert rec.include?('+43%')
+    assert rec.include?('100% операций в каскад')
+  end
+
   def test_recommendation_for_no_requisites
     p = fixture_provider('payment_system' => 'payflow', 'traffic_percentage' => 35, 'available_requisites' => 0)
     decisions = [decision('op1', 'payflow')]

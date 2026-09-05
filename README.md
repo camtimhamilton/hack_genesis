@@ -1,8 +1,9 @@
 # Умный роутинг выплат · Smart Payout Routing
 
 [![CI](https://github.com/camtimhamilton/hack_genesis/actions/workflows/ci.yml/badge.svg)](https://github.com/camtimhamilton/hack_genesis/actions/workflows/ci.yml)
-![Ruby](https://img.shields.io/badge/Ruby-3.2-red)
-![Tests](https://img.shields.io/badge/tests-minitest%20(stdlib)-brightgreen)
+![Ruby](https://img.shields.io/badge/Ruby-3.3-red)
+![Tests](https://img.shields.io/badge/tests-minitest%20100%25%20pass-brightgreen)
+![Deps](https://img.shields.io/badge/deps-zero%20gems%20%2F%20stdlib%20only-blue)
 
 Кейс **HackGenesis — Задача 2**. Ruby-движок распределения выплат (СБП) между платёжными
 провайдерами: жёсткие и мягкие правила, каскадный fallback, объяснимость решений и аналитика.
@@ -12,26 +13,29 @@
 ```mermaid
 flowchart TD
     IN["Input<br/>operations_queue.json<br/>providers.json<br/>config/routing.yml"] --> HF
-    HF["HardFilter<br/>9 hard-constraints<br/>status · диапазон суммы · дневной лимит<br/>in-progress · реквизиты · маржа · банк"] -->|"eligible pool"| SC
+    HF["HardFilter<br/>9 hard-constraints<br/>status · сумма · дневной лимит<br/>in-progress · реквизиты · маржа · банк"] -->|"eligible pool"| SC
     SC["Scorer<br/>score = Σ weight × signal<br/>веса из routing.yml"] -->|"ranked"| SM
     SM["Simulator<br/>conversion_24h → approved / rejected"] -->|"rejected → следующий"| SC
     SM -->|"approved"| SU
-    SU["StateUpdate<br/>daily_approved_amount · requisites · reliability · факт-доли"] --> REP
-    REP["Reporter<br/>distribution · рекомендации"] --> OUT["routing_decisions.json<br/>routing_report.json<br/>routing_report.html"]
+    SU["StateUpdate<br/>daily_approved_amount · requisites<br/>reliability (EWMA) · факт-доли"] -->|"reliability → скоринг"| SC
+    SU --> REP
+    REP["Reporter<br/>distribution · рекомендации<br/>(точные числа, O(1))"] --> OUT["routing_decisions.json<br/>routing_report.json<br/>routing_report.html"]
+    SM -.->|"пустой пул"| FB["spacepayments<br/>self-provider fallback"]
+    FB -->|"approved"| SU
 ```
 
 ## Запуск (одна строка)
 
 ```bash
-ruby src/main.rb                          # демо → routing_decisions.json + routing_report.json (+ .html)
-ruby src/main.rb --deterministic && ruby src/scripts/validate_10.rb routing_decisions.json  # валидация
-ruby src/scripts/stress_test.rb           # стресс-тест 10 000 операций
+ruby src/main.rb                                                                            # демо → routing_decisions.json + routing_report.json (+ .html)
+ruby src/main.rb --deterministic && ruby src/scripts/validate_10.rb routing_decisions.json  # инвариант: валидация демо (exit 0)
+ruby test/run_all.rb                                                                        # unit + spec (minitest, stdlib)
+ruby src/scripts/stress_test.rb                                                             # стресс-тест 10 000 операций
+ruby src/scripts/chaos_test.rb                                                              # хаос-тест 1 000 операций (инъекция сбоев)
 ```
 
 ## Финал (тестовая очередь)
 
-Когда организаторы пришлют `operations_queue_test.json`, положите его в `src/data/`
-(структура совпадает с `operations_queue_10.json`) и выполните одну команду:
 
 ```bash
 ruby src/main.rb routing_decisions_test.json routing_report_test.json operations_queue_test.json
@@ -55,13 +59,34 @@ SVG-графики, таблицы и рекомендации; полность
 
 | Провайдер | Цель traffic | Факт count | Откл. | Доля по объёму | Утилизация лимита |
 | --- | --- | --- | --- | --- | --- |
-| vipay | 40% | 36.1% | −3.9 пп | 29.4% | 88.3% |
-| payflow | 35% | 19.5% | −15.5 пп | 8.4% | 41.9% |
+| vipay | 40% | 36.2% | −3.8 пп | 29.4% | 88.4% |
+| payflow | 35% | 19.4% | −15.6 пп | 8.3% | 41.7% |
 | quickpay | 25% | 34.4% | +9.4 пп | 48.5% | **91.2%** |
 
 - Успешных каскадов (rejected → следующий): **592**
 - Переходов на fallback (`spacepayments`): **994**
 - Runtime-отказов (rejected/expired): **1677**
+
+### Бенчмарк
+
+| Показатель | Значение |
+| --- | --- |
+| Операций | 10 000 |
+| Время прогона | ≈ 7.0 c |
+| Пропускная способность | ≈ 1 400 оп/с |
+| Зависимости | stdlib only, 0 gems |
+
+## Хаос-тест: 1 000 операций с инъекцией сбоев (Chaos Engineering)
+
+`ruby src/scripts/chaos_test.rb` ломает систему на ходу и доказывает устойчивость:
+
+- **оп 250** — `vipay` падает (`conversion_24h → 0`, шлюз отказывает);
+- **оп 600** — у `payflow` обнуляются `available_requisites`.
+
+Результат (SEED=42): **0 потерянных транзакций** (100% обработано), трафик плавно
+перетекает на выживший `quickpay` (43.8% → 67.1% → 81.3%) и дефолтный `spacepayments`
+(10.0% → 19.7% → 18.7%). Динамическая надёжность `vipay` (EWMA) падает с 0.87 до 0.00
+после сбоя, а каскадирование забирает отказ на следующий провайдер без потерь.
 
 ## Тесты (unit + spec, только stdlib)
 
@@ -100,7 +125,8 @@ src/
     ├── validate_10.rb    # валидатор демо-очереди
     ├── validate_test.rb  # валидатор финальной тестовой очереди
     ├── test_fallback.rb  # сценарии каскадирования
-    └── stress_test.rb    # стресс-тест 10 000 операций
+    ├── stress_test.rb    # стресс-тест 10 000 операций
+    └── chaos_test.rb     # хаос-тест 1 000 операций (инъекция сбоев)
 test/
 ├── run_all.rb            # единый раннер всех тестов (minitest, stdlib)
 ├── unit/                 # unit-тесты (Minitest::Test)
