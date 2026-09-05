@@ -58,6 +58,7 @@ class Router
     attempts = build_attempts(results, ranked, selected, reason, rejected, op, ctx)
 
     apply_state!(selected, op, ctx) if selected && final_status == 'approved'
+    apply_reliability!(selected, final_status, rejected)
 
     {
       'operation_id' => op['operation_id'],
@@ -117,6 +118,13 @@ class Router
     provider.reserve_requisite!
     provider.register_request!(parse_time(op['created_at']))
     ctx.record!(provider.payment_system, amount)
+  end
+
+  # Обновление динамической надёжности по исходам: approved → ↑, rejected/expired → ↓.
+  # Учитываются и выбранный провайдер, и те, кто отказал/таймаутнул при попытке.
+  def apply_reliability!(selected, final_status, rejected)
+    rejected.each { |p, status| p.update_reliability!(status) }
+    selected.update_reliability!(final_status) if selected
   end
 
   def parse_time(str)

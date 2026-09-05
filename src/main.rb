@@ -9,6 +9,7 @@ require 'router'
 require 'scorer'
 require 'simulator'
 require 'reporter'
+require 'html_reporter'
 
 # Корень проекта — сюда пишутся выходные артефакты.
 ROOT = File.expand_path('..', __dir__)
@@ -26,6 +27,9 @@ USAGE = <<~TEXT
     report_path     путь к routing_report.json      (по умолчанию <корень>/routing_report.json)
     queue_filename  имя очереди в src/data           (по умолчанию operations_queue_10.json)
 
+  Рядом с JSON-отчётом всегда пишется автономный HTML-отчёт (то же имя, .html),
+  полностью офлайн (inline CSS/JS/SVG, без CDN). JSON остаётся обязательным артефактом.
+
   По умолчанию симулятор вероятностный: approved с вероятностью conversion_24h,
   иначе rejected → каскад на следующего (при пустом пуле — spacepayments).
 
@@ -37,7 +41,7 @@ TEXT
 def main
   print_usage_and_exit if ARGV.include?('--help') || ARGV.include?('-h')
 
-  args, deterministic = parse_args
+  args, deterministic = parse_args # это аргумент в консоли
   queue_filename = args[2] || 'operations_queue_10.json'
   ensure_queue_exists!(queue_filename)
 
@@ -68,10 +72,14 @@ def main
   report = reporter.build(decisions, providers, queue)
   File.write(report_path, JSON.pretty_generate(report))
 
+  html_path = report_path.sub(/\.json\z/i, '') + '.html'
+  File.write(html_path, HtmlReporter.new.render(report))
+
   puts "strategy : #{config.active_strategy} (tie-break: #{config.tie_break})"
   puts "simulation: #{deterministic ? 'deterministic (always_approve)' : 'probabilistic (conversion_24h)'}"
   puts "Wrote #{decisions.size} decisions to #{decisions_path}"
   puts "Wrote report to #{report_path}"
+  puts "Wrote HTML report to #{html_path}"
   puts
   decisions.each do |d|
     attempts = d['attempts'].map { |a| "#{a['provider']}:#{a['decision']}(#{a['reason']})" }.join(', ')

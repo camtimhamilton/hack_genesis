@@ -10,13 +10,14 @@ active_strategy: weighted
 
 # Веса soft-стратегий (сумма = 1.0)
 weights:
-  count_share: 0.30
-  volume_share: 0.20
-  conversion: 0.12
-  cascade: 0.12
+  count_share: 0.26
+  volume_share: 0.18
+  conversion: 0.10
+  cascade: 0.10
   amount_range: 0.08
   turnover: 0.10
   rate_limit: 0.08
+  reliability: 0.10
 
 # Правило разрешения ничьей
 tie_break: priority

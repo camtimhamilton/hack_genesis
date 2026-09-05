@@ -8,6 +8,7 @@
 # Сгенерированные демо-артефакты (пересоздаются: ruby src/main.rb)
 /routing_decisions.json
 /routing_report.json
+/routing_report.html
 /routing_decisions_probe.json
 /routing_report_probe.json
 

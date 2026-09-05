@@ -8,6 +8,7 @@ require_relative 'strategies/conversion'
 require_relative 'strategies/amount_range'
 require_relative 'strategies/rate_limit'
 require_relative 'strategies/turnover'
+require_relative 'strategies/reliability'
 
 # Взвешенный скоринг: объединяет soft-стратегии в единый score.
 class Scorer
@@ -18,7 +19,8 @@ class Scorer
     ConversionStrategy.new,
     AmountRangeStrategy.new,
     RateLimitStrategy.new,
-    TurnoverStrategy.new
+    TurnoverStrategy.new,
+    ReliabilityStrategy.new
   ].freeze
 
   def initialize(weights: {}, strategies: DEFAULT_STRATEGIES, tie_break: 'priority')

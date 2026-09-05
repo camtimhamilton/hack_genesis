@@ -27,6 +27,7 @@ class Reporter
       'volume_distribution' => volume_distribution(decisions, providers, queue),
       'skip_reasons' => skip_reasons(decisions),
       'results' => results(decisions),
+      'reliability' => reliability_section(providers),
       'projected_daily_utilization' => utilization(providers),
       'recommendations' => recommendations(decisions, providers, queue),
       'unachieved_goals' => unachieved_goals(decisions, providers)
@@ -98,6 +99,18 @@ class Reporter
       'approval_rate_pct' => round1(pct(totals['approved'], decisions.size)),
       'by_provider' => by_provider
     }
+  end
+
+  # Динамическая надёжность провайдеров (доп. секция отчёта, этап 6).
+  def reliability_section(providers)
+    providers.each_with_object({}) do |p, acc|
+      acc[p.payment_system] = {
+        'value' => round3(p.reliability),
+        'baseline' => round3(p.reliability_baseline),
+        'source' => p.reliability_source,
+        'observations' => p.reliability_observations
+      }
+    end
   end
 
   def utilization(providers)
@@ -213,5 +226,9 @@ class Reporter
 
   def round1(value)
     (value.to_f * 10).round / 10.0
+  end
+
+  def round3(value)
+    (value.to_f * 1000).round / 1000.0
   end
 end

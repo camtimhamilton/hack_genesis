@@ -29,7 +29,11 @@ class Loader
   end
 
   def providers
-    @providers ||= snapshot.fetch('providers', []).map { |raw| Provider.new(raw) }
+    @providers ||= begin
+      list = snapshot.fetch('providers', []).map { |raw| Provider.new(raw) }
+      seed_reliability!(list)
+      list
+    end
   end
 
   # --- операции (очередь) ---
@@ -52,6 +56,25 @@ class Loader
   end
 
   private
+
+  # Базовая надёжность из operations_history.csv: approved/total по провайдеру.
+  # Если у провайдера нет истории — остаётся fallback conversion_24h (в Provider#initialize).
+  def seed_reliability!(providers)
+    stats = history.each_with_object(Hash.new { |h, k| h[k] = [0, 0] }) do |row, acc|
+      ps = row['payment_system']
+      next if ps.nil? || ps.empty?
+
+      acc[ps][1] += 1
+      acc[ps][0] += 1 if row['status'] == 'approved'
+    end
+
+    providers.each do |p|
+      approved, total = stats[p.payment_system]
+      next if total.nil? || total.zero?
+
+      p.seed_reliability!(approved.to_f / total.to_f, source: 'history', observations: total)
+    end
+  end
 
   def read_json(filename)
     path = File.join(@data_dir, filename)
