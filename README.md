@@ -8,6 +8,28 @@
 Кейс **HackGenesis — Задача 2**. Ruby-движок распределения выплат (СБП) между платёжными
 провайдерами: жёсткие и мягкие правила, каскадный fallback, объяснимость решений и аналитика.
 
+## Быстрый старт (Quickstart)
+
+Проект работает на чистом Ruby (stdlib) и **не требует установки сторонних гемов** (`bundle install` не нужен).
+
+```bash
+# 1. Запуск роутинга очереди по умолчанию (создает routing_decisions.json и routing_report.json)
+ruby main.rb
+
+# 2. Официальная валидация жюри (детерминированный прогон -> 29/29 OK)
+ruby main.rb --deterministic && ruby scripts/validate_10.rb routing_decisions.json
+
+# 3. Запуск всех 139+ тестов (Minitest, < 0.1 сек)
+ruby test/run_all.rb
+
+# 4. Хаос-тестирование (инъекция сбоев и проверка 100% доставки)
+ruby scripts/chaos_test.rb
+
+# 5. Интерактивный дашборд
+# Просто откройте routing_report.html в любом браузере (полный офлайн, zero-dependency), без использования runtime нейросетей
+```
+
+
 ## Архитектура
 
 ```mermaid
