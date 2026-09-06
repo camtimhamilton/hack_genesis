@@ -45,7 +45,12 @@ class Loader
   def history
     return @history if defined?(@history)
 
-    content = File.read(File.join(@data_dir, 'operations_history.csv'), encoding: 'UTF-8')
+    path = File.join(@data_dir, 'operations_history.csv')
+    content = begin
+      File.read(path, encoding: 'UTF-8')
+    rescue Errno::ENOENT
+      raise DataError, "Файл входных данных не найден: #{path}"
+    end
     content = content.sub(/\A\uFEFF/, '') # убрать BOM, если есть
     @history = CSV.parse(content, headers: true)
   end

@@ -102,4 +102,21 @@ class ProviderTest < Minitest::Test
     p.update_reliability!('expired')
     assert_in_delta 0.4, p.reliability, 1e-9
   end
+
+  def test_reserve_and_release_in_progress
+    p = fixture_provider('in_progress_count' => 2, 'in_progress_amount' => 100)
+    p.reserve_in_progress!(500)
+    assert_equal 3, p.in_progress_count
+    assert_equal 600, p.in_progress_amount
+    p.release_in_progress!(500)
+    assert_equal 2, p.in_progress_count
+    assert_equal 100, p.in_progress_amount
+  end
+
+  def test_release_in_progress_does_not_go_negative
+    p = fixture_provider('in_progress_count' => 0, 'in_progress_amount' => 0)
+    p.release_in_progress!(500)
+    assert_equal 0, p.in_progress_count
+    assert_equal 0, p.in_progress_amount
+  end
 end

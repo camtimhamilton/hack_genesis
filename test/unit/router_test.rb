@@ -108,4 +108,30 @@ class RouterTest < Minitest::Test
     assert_operator vipay.reliability, :<, 0.5
     assert_operator payflow.reliability, :>, 0.5
   end
+
+  def test_empty_pool_marks_no_eligible_provider
+    vipay = fixture_provider('payment_system' => 'vipay', 'banks' => ['sberbank'])
+    space = spacepayments_provider.apply_override!('status' => 'inactive')
+    router = Router.new([vipay, space], scorer: StubScorer.new(%w[vipay]),
+                        simulator: StubSimulator.new)
+    d = router.route(fixture_op('bank' => 'alfa'), RoutingContext.new)
+    assert_nil d['selected_provider']
+    assert_equal 'no_eligible_provider', d['reason']
+  end
+
+  def test_in_progress_reserved_during_attempt
+    p = fixture_provider('payment_system' => 'vipay', 'in_progress_count' => 2, 'in_progress_amount' => 100)
+    observed = []
+    sim = Object.new
+    sim.define_singleton_method(:result) do |provider, _op = nil|
+      observed << [provider.in_progress_count, provider.in_progress_amount]
+      'approved'
+    end
+    sim.define_singleton_method(:latency) { |_p| 0 }
+    router = Router.new([p], simulator: sim)
+    router.route(fixture_op('amount' => 500), RoutingContext.new)
+    assert_equal [[3, 600]], observed
+    assert_equal 2, p.in_progress_count
+    assert_equal 100, p.in_progress_amount
+  end
 end

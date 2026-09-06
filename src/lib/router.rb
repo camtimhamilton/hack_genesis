@@ -39,7 +39,7 @@ class Router
     rejected = {}
 
     ranked.each do |p, _score|
-      status = @simulator.result(p, op)
+      status = try_provider(p, op)
       if status == 'approved'
         selected = p
         final_status = status
@@ -51,7 +51,7 @@ class Router
 
     if selected.nil? && fallback
       selected = fallback
-      final_status = @simulator.result(fallback, op)
+      final_status = try_provider(fallback, op)
     end
 
     reason = selected_reason(selected, external.size)
@@ -63,6 +63,7 @@ class Router
     {
       'operation_id' => op['operation_id'],
       'selected_provider' => selected&.payment_system,
+      'reason' => reason,
       'attempts' => attempts,
       'simulated_result' => final_status,
       'latency_sec' => selected ? @simulator.latency(selected) : nil
@@ -71,8 +72,17 @@ class Router
 
   private
 
+  # Попытка проведения операции через провайдера: резервирует in-progress на
+  # время симуляции и освобождает после исхода (spec.md §5.5), даже при ошибке.
+  def try_provider(provider, op)
+    provider.reserve_in_progress!(op['amount'])
+    @simulator.result(provider, op)
+  ensure
+    provider.release_in_progress!(op['amount'])
+  end
+
   def selected_reason(selected, external_count)
-    return nil if selected.nil?
+    return 'no_eligible_provider' if selected.nil?
     return 'fallback_self_provider' if selected.payment_system == FALLBACK
 
     external_count == 1 ? 'only_eligible_provider' : 'highest_score'

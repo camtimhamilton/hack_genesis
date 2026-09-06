@@ -21,4 +21,12 @@ class SimulatorTest < Minitest::Test
   def test_latency
     assert_equal 30, Simulator.new.latency(fixture_provider('avg_latency_sec' => 30))
   end
+
+  def test_failures_include_expired
+    p = fixture_provider('conversion_24h' => 0.0)
+    sim = Simulator.new(seed: 42)
+    results = Array.new(1000) { sim.result(p) }
+    assert results.all? { |r| %w[rejected expired].include?(r) }
+    assert_includes results, 'expired'
+  end
 end

@@ -58,6 +58,7 @@
 | `fallback_self_provider` | выбран fallback `spacepayments` |
 | `rejected_by_provider` | провайдер отклонил (→ следующий) |
 | `expired_by_provider` | таймаут провайдера (→ следующий) |
+| `no_eligible_provider` | пул пуст даже после fallback (`selected_provider = null`) |
 | `lower_score` | допущен, но не выбран (score ниже выбранного) |
 
 ## Fallback

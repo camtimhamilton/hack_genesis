@@ -175,6 +175,23 @@ class Provider
     @state[:available_requisites] = current - 1 if current.positive?
   end
 
+  # Резервирование операции «в процессе» (spec.md §5.5): увеличивает счётчики
+  # in-progress на время попытки проведения. После исхода — release_in_progress!.
+  def reserve_in_progress!(amount)
+    @state[:in_progress_count] = (@state[:in_progress_count] || 0) + 1
+    @state[:in_progress_amount] = (@state[:in_progress_amount] || 0) + amount.to_f
+    self
+  end
+
+  # Освобождение операции из «в процессе» после завершения попытки.
+  def release_in_progress!(amount)
+    count = @state[:in_progress_count] || 0
+    @state[:in_progress_count] = count - 1 if count.positive?
+    current = @state[:in_progress_amount] || 0
+    @state[:in_progress_amount] = [current - amount.to_f, 0.0].max
+    self
+  end
+
   # Хаос-инъекция: обнулить пул свободных реквизитов (chaos_test.rb).
   def drain_requisites!
     @state[:available_requisites] = 0

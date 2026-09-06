@@ -1,11 +1,9 @@
 # Конфигурация правил роутинга.
-# Этап 2: веса soft-стратегий + доопределяемые поля (объём, диапазоны, обязательства).
 
 gateway: RUB_SBP_WITHDRAW
 merchant: alpha_market
 
 # Активная стратегия выбора среди допустимых провайдеров:
-#   weighted — взвешенная сумма soft-факторов (см. architecture.md §4.2)
 active_strategy: weighted
 
 # Веса soft-стратегий (сумма = 1.0)
@@ -22,7 +20,7 @@ weights:
 # Правило разрешения ничьей
 tie_break: priority
 
-# Доопределяемые поля провайдеров (отсутствуют в providers.json)
+# Доопределяемые поля провайдеров
 overrides:
   vipay:
     volume_share_pct: 40
