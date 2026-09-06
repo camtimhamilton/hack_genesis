@@ -1,0 +1,2531 @@
+[
+  {
+    "operation_id": "op_111",
+    "selected_provider": "payflow",
+    "reason": "highest_score",
+    "attempts": [
+      {
+        "provider": "vipay",
+        "decision": "skipped",
+        "reason": "bank_not_in_list",
+        "details": "bank alfa не в banks"
+      },
+      {
+        "provider": "payflow",
+        "decision": "selected",
+        "reason": "highest_score",
+        "details": "score=0.740 [count_share=0.221, volume_share=0.153, cascade=0.050, conversion=0.091, amount_range=0.048, rate_limit=0.080, turnover=0.050, reliability=0.047]"
+      },
+      {
+        "provider": "quickpay",
+        "decision": "skipped",
+        "reason": "lower_score",
+        "details": "score=0.672 ниже выбранного"
+      }
+    ],
+    "simulated_result": "approved",
+    "latency_sec": 52
+  },
+  {
+    "operation_id": "op_112",
+    "selected_provider": "vipay",
+    "reason": "highest_score",
+    "attempts": [
+      {
+        "provider": "vipay",
+        "decision": "selected",
+        "reason": "highest_score",
+        "details": "score=0.823 [count_share=0.234, volume_share=0.162, cascade=0.100, conversion=0.087, amount_range=0.032, rate_limit=0.080, turnover=0.050, reliability=0.078]"
+      },
+      {
+        "provider": "payflow",
+        "decision": "skipped",
+        "reason": "bank_not_in_list",
+        "details": "bank vtb не в banks"
+      },
+      {
+        "provider": "quickpay",
+        "decision": "skipped",
+        "reason": "lower_score",
+        "details": "score=0.672 ниже выбранного"
+      }
+    ],
+    "simulated_result": "approved",
+    "latency_sec": 38
+  },
+  {
+    "operation_id": "op_113",
+    "selected_provider": "quickpay",
+    "reason": "only_eligible_provider",
+    "attempts": [
+      {
+        "provider": "vipay",
+        "decision": "skipped",
+        "reason": "bank_not_in_list",
+        "details": "bank gazprombank не в banks"
+      },
+      {
+        "provider": "payflow",
+        "decision": "skipped",
+        "reason": "bank_not_in_list",
+        "details": "bank gazprombank не в banks"
+      },
+      {
+        "provider": "quickpay",
+        "decision": "selected",
+        "reason": "only_eligible_provider",
+        "details": "единственный допустимый внешний провайдер"
+      }
+    ],
+    "simulated_result": "approved",
+    "latency_sec": 29
+  },
+  {
+    "operation_id": "op_114",
+    "selected_provider": "vipay",
+    "reason": "highest_score",
+    "attempts": [
+      {
+        "provider": "vipay",
+        "decision": "selected",
+        "reason": "highest_score",
+        "details": "score=0.632 [count_share=0.147, volume_share=0.038, cascade=0.100, conversion=0.087, amount_range=0.048, rate_limit=0.080, turnover=0.050, reliability=0.082]"
+      },
+      {
+        "provider": "payflow",
+        "decision": "skipped",
+        "reason": "amount_exceeds_limit",
+        "details": "75000 > limit_amount_max 50000"
+      },
+      {
+        "provider": "quickpay",
+        "decision": "skipped",
+        "reason": "lower_score",
+        "details": "score=0.557 ниже выбранного"
+      }
+    ],
+    "simulated_result": "approved",
+    "latency_sec": 38
+  },
+  {
+    "operation_id": "op_115",
+    "selected_provider": "quickpay",
+    "reason": "highest_score",
+    "attempts": [
+      {
+        "provider": "vipay",
+        "decision": "skipped",
+        "reason": "lower_score",
+        "details": "score=0.561 ниже выбранного"
+      },
+      {
+        "provider": "payflow",
+        "decision": "skipped",
+        "reason": "amount_exceeds_limit",
+        "details": "52000 > limit_amount_max 50000"
+      },
+      {
+        "provider": "quickpay",
+        "decision": "selected",
+        "reason": "highest_score",
+        "details": "score=0.599 [count_share=0.130, volume_share=0.121, cascade=0.033, conversion=0.079, amount_range=0.032, rate_limit=0.080, turnover=0.050, reliability=0.074]"
+      }
+    ],
+    "simulated_result": "approved",
+    "latency_sec": 29
+  },
+  {
+    "operation_id": "op_116",
+    "selected_provider": "spacepayments",
+    "reason": "fallback_self_provider",
+    "attempts": [
+      {
+        "provider": "vipay",
+        "decision": "skipped",
+        "reason": "bank_not_in_list",
+        "details": "bank gazprombank не в banks"
+      },
+      {
+        "provider": "payflow",
+        "decision": "skipped",
+        "reason": "bank_not_in_list",
+        "details": "bank gazprombank не в banks"
+      },
+      {
+        "provider": "quickpay",
+        "decision": "skipped",
+        "reason": "rejected_by_provider"
+      },
+      {
+        "provider": "spacepayments",
+        "decision": "selected",
+        "reason": "fallback_self_provider",
+        "details": "fallback: пул допустимых внешних провайдеров пуст"
+      }
+    ],
+    "simulated_result": "approved",
+    "latency_sec": 15
+  },
+  {
+    "operation_id": "op_117",
+    "selected_provider": "vipay",
+    "reason": "highest_score",
+    "attempts": [
+      {
+        "provider": "vipay",
+        "decision": "selected",
+        "reason": "highest_score",
+        "details": "score=0.643 [count_share=0.147, volume_share=0.061, cascade=0.100, conversion=0.087, amount_range=0.032, rate_limit=0.080, turnover=0.050, reliability=0.086]"
+      },
+      {
+        "provider": "payflow",
+        "decision": "skipped",
+        "reason": "bank_not_in_list",
+        "details": "bank vtb не в banks"
+      },
+      {
+        "provider": "quickpay",
+        "decision": "skipped",
+        "reason": "lower_score",
+        "details": "score=0.527 ниже выбранного"
+      }
+    ],
+    "simulated_result": "approved",
+    "latency_sec": 38
+  },
+  {
+    "operation_id": "op_118",
+    "selected_provider": "quickpay",
+    "reason": "only_eligible_provider",
+    "attempts": [
+      {
+        "provider": "vipay",
+        "decision": "skipped",
+        "reason": "bank_not_in_list",
+        "details": "bank gazprombank не в banks"
+      },
+      {
+        "provider": "payflow",
+        "decision": "skipped",
+        "reason": "amount_exceeds_limit",
+        "details": "80000 > limit_amount_max 50000"
+      },
+      {
+        "provider": "quickpay",
+        "decision": "selected",
+        "reason": "only_eligible_provider",
+        "details": "единственный допустимый внешний провайдер"
+      }
+    ],
+    "simulated_result": "approved",
+    "latency_sec": 29
+  },
+  {
+    "operation_id": "op_119",
+    "selected_provider": "payflow",
+    "reason": "only_eligible_provider",
+    "attempts": [
+      {
+        "provider": "vipay",
+        "decision": "skipped",
+        "reason": "amount_below_minimum",
+        "details": "900 < limit_amount_min 1000"
+      },
+      {
+        "provider": "payflow",
+        "decision": "selected",
+        "reason": "only_eligible_provider",
+        "details": "единственный допустимый внешний провайдер"
+      },
+      {
+        "provider": "quickpay",
+        "decision": "skipped",
+        "reason": "amount_below_minimum",
+        "details": "900 < limit_amount_min 1000"
+      }
+    ],
+    "simulated_result": "approved",
+    "latency_sec": 52
+  },
+  {
+    "operation_id": "op_120",
+    "selected_provider": "quickpay",
+    "reason": "only_eligible_provider",
+    "attempts": [
+      {
+        "provider": "vipay",
+        "decision": "skipped",
+        "reason": "amount_exceeds_limit",
+        "details": "150000 > limit_amount_max 100000"
+      },
+      {
+        "provider": "payflow",
+        "decision": "skipped",
+        "reason": "amount_exceeds_limit",
+        "details": "150000 > limit_amount_max 50000"
+      },
+      {
+        "provider": "quickpay",
+        "decision": "selected",
+        "reason": "only_eligible_provider",
+        "details": "единственный допустимый внешний провайдер"
+      }
+    ],
+    "simulated_result": "approved",
+    "latency_sec": 29
+  },
+  {
+    "operation_id": "op_121",
+    "selected_provider": "quickpay",
+    "reason": "highest_score",
+    "attempts": [
+      {
+        "provider": "vipay",
+        "decision": "skipped",
+        "reason": "rejected_by_provider"
+      },
+      {
+        "provider": "payflow",
+        "decision": "skipped",
+        "reason": "amount_exceeds_limit",
+        "details": "75000 > limit_amount_max 50000"
+      },
+      {
+        "provider": "quickpay",
+        "decision": "selected",
+        "reason": "highest_score",
+        "details": "score=0.457 [count_share=0.091, volume_share=0.015, cascade=0.033, conversion=0.079, amount_range=0.032, rate_limit=0.080, turnover=0.050, reliability=0.077]"
+      }
+    ],
+    "simulated_result": "approved",
+    "latency_sec": 29
+  },
+  {
+    "operation_id": "op_122",
+    "selected_provider": "quickpay",
+    "reason": "highest_score",
+    "attempts": [
+      {
+        "provider": "vipay",
+        "decision": "skipped",
+        "reason": "rejected_by_provider"
+      },
+      {
+        "provider": "payflow",
+        "decision": "skipped",
+        "reason": "bank_not_in_list",
+        "details": "bank tinkoff не в banks"
+      },
+      {
+        "provider": "quickpay",
+        "decision": "selected",
+        "reason": "highest_score",
+        "details": "score=0.434 [count_share=0.077, volume_share=0.006, cascade=0.033, conversion=0.079, amount_range=0.032, rate_limit=0.076, turnover=0.050, reliability=0.081]"
+      }
+    ],
+    "simulated_result": "approved",
+    "latency_sec": 29
+  },
+  {
+    "operation_id": "op_123",
+    "selected_provider": "spacepayments",
+    "reason": "fallback_self_provider",
+    "attempts": [
+      {
+        "provider": "vipay",
+        "decision": "skipped",
+        "reason": "bank_not_in_list",
+        "details": "bank gazprombank не в banks"
+      },
+      {
+        "provider": "payflow",
+        "decision": "skipped",
+        "reason": "amount_exceeds_limit",
+        "details": "80000 > limit_amount_max 50000"
+      },
+      {
+        "provider": "quickpay",
+        "decision": "skipped",
+        "reason": "rejected_by_provider"
+      },
+      {
+        "provider": "spacepayments",
+        "decision": "selected",
+        "reason": "fallback_self_provider",
+        "details": "fallback: пул допустимых внешних провайдеров пуст"
+      }
+    ],
+    "simulated_result": "approved",
+    "latency_sec": 15
+  },
+  {
+    "operation_id": "op_124",
+    "selected_provider": "payflow",
+    "reason": "highest_score",
+    "attempts": [
+      {
+        "provider": "vipay",
+        "decision": "skipped",
+        "reason": "lower_score",
+        "details": "score=0.708 ниже выбранного"
+      },
+      {
+        "provider": "payflow",
+        "decision": "selected",
+        "reason": "highest_score",
+        "details": "score=0.716 [count_share=0.181, volume_share=0.150, cascade=0.050, conversion=0.091, amount_range=0.048, rate_limit=0.080, turnover=0.050, reliability=0.066]"
+      },
+      {
+        "provider": "quickpay",
+        "decision": "skipped",
+        "reason": "lower_score",
+        "details": "score=0.438 ниже выбранного"
+      }
+    ],
+    "simulated_result": "approved",
+    "latency_sec": 52
+  },
+  {
+    "operation_id": "op_125",
+    "selected_provider": "vipay",
+    "reason": "highest_score",
+    "attempts": [
+      {
+        "provider": "vipay",
+        "decision": "selected",
+        "reason": "highest_score",
+        "details": "score=0.713 [count_share=0.178, volume_share=0.129, cascade=0.100, conversion=0.087, amount_range=0.032, rate_limit=0.080, turnover=0.050, reliability=0.057]"
+      },
+      {
+        "provider": "payflow",
+        "decision": "skipped",
+        "reason": "bank_not_in_list",
+        "details": "bank vtb не в banks"
+      },
+      {
+        "provider": "quickpay",
+        "decision": "skipped",
+        "reason": "lower_score",
+        "details": "score=0.451 ниже выбранного"
+      }
+    ],
+    "simulated_result": "approved",
+    "latency_sec": 38
+  },
+  {
+    "operation_id": "op_126",
+    "selected_provider": "payflow",
+    "reason": "highest_score",
+    "attempts": [
+      {
+        "provider": "vipay",
+        "decision": "skipped",
+        "reason": "bank_not_in_list",
+        "details": "bank alfa не в banks"
+      },
+      {
+        "provider": "payflow",
+        "decision": "selected",
+        "reason": "highest_score",
+        "details": "score=0.705 [count_share=0.169, volume_share=0.144, cascade=0.050, conversion=0.091, amount_range=0.048, rate_limit=0.080, turnover=0.050, reliability=0.073]"
+      },
+      {
+        "provider": "quickpay",
+        "decision": "skipped",
+        "reason": "lower_score",
+        "details": "score=0.466 ниже выбранного"
+      }
+    ],
+    "simulated_result": "approved",
+    "latency_sec": 52
+  },
+  {
+    "operation_id": "op_127",
+    "selected_provider": "spacepayments",
+    "reason": "fallback_self_provider",
+    "attempts": [
+      {
+        "provider": "vipay",
+        "decision": "skipped",
+        "reason": "bank_not_in_list",
+        "details": "bank raiffeisen не в banks"
+      },
+      {
+        "provider": "payflow",
+        "decision": "skipped",
+        "reason": "bank_not_in_list",
+        "details": "bank raiffeisen не в banks"
+      },
+      {
+        "provider": "quickpay",
+        "decision": "skipped",
+        "reason": "rejected_by_provider"
+      },
+      {
+        "provider": "spacepayments",
+        "decision": "selected",
+        "reason": "fallback_self_provider",
+        "details": "fallback: пул допустимых внешних провайдеров пуст"
+      }
+    ],
+    "simulated_result": "approved",
+    "latency_sec": 15
+  },
+  {
+    "operation_id": "op_128",
+    "selected_provider": "quickpay",
+    "reason": "only_eligible_provider",
+    "attempts": [
+      {
+        "provider": "vipay",
+        "decision": "skipped",
+        "reason": "bank_not_in_list",
+        "details": "bank raiffeisen не в banks"
+      },
+      {
+        "provider": "payflow",
+        "decision": "skipped",
+        "reason": "bank_not_in_list",
+        "details": "bank raiffeisen не в banks"
+      },
+      {
+        "provider": "quickpay",
+        "decision": "selected",
+        "reason": "only_eligible_provider",
+        "details": "единственный допустимый внешний провайдер"
+      }
+    ],
+    "simulated_result": "approved",
+    "latency_sec": 29
+  },
+  {
+    "operation_id": "op_129",
+    "selected_provider": "quickpay",
+    "reason": "only_eligible_provider",
+    "attempts": [
+      {
+        "provider": "vipay",
+        "decision": "skipped",
+        "reason": "bank_not_in_list",
+        "details": "bank alfa не в banks"
+      },
+      {
+        "provider": "payflow",
+        "decision": "skipped",
+        "reason": "amount_exceeds_limit",
+        "details": "52000 > limit_amount_max 50000"
+      },
+      {
+        "provider": "quickpay",
+        "decision": "selected",
+        "reason": "only_eligible_provider",
+        "details": "единственный допустимый внешний провайдер"
+      }
+    ],
+    "simulated_result": "approved",
+    "latency_sec": 29
+  },
+  {
+    "operation_id": "op_130",
+    "selected_provider": "spacepayments",
+    "reason": "fallback_self_provider",
+    "attempts": [
+      {
+        "provider": "vipay",
+        "decision": "skipped",
+        "reason": "bank_not_in_list",
+        "details": "bank alfa не в banks"
+      },
+      {
+        "provider": "payflow",
+        "decision": "skipped",
+        "reason": "amount_exceeds_limit",
+        "details": "95000 > limit_amount_max 50000"
+      },
+      {
+        "provider": "quickpay",
+        "decision": "skipped",
+        "reason": "rejected_by_provider"
+      },
+      {
+        "provider": "spacepayments",
+        "decision": "selected",
+        "reason": "fallback_self_provider",
+        "details": "fallback: пул допустимых внешних провайдеров пуст"
+      }
+    ],
+    "simulated_result": "approved",
+    "latency_sec": 15
+  },
+  {
+    "operation_id": "op_131",
+    "selected_provider": "quickpay",
+    "reason": "only_eligible_provider",
+    "attempts": [
+      {
+        "provider": "vipay",
+        "decision": "skipped",
+        "reason": "amount_exceeds_limit",
+        "details": "150000 > limit_amount_max 100000"
+      },
+      {
+        "provider": "payflow",
+        "decision": "skipped",
+        "reason": "amount_exceeds_limit",
+        "details": "150000 > limit_amount_max 50000"
+      },
+      {
+        "provider": "quickpay",
+        "decision": "selected",
+        "reason": "only_eligible_provider",
+        "details": "единственный допустимый внешний провайдер"
+      }
+    ],
+    "simulated_result": "approved",
+    "latency_sec": 29
+  },
+  {
+    "operation_id": "op_132",
+    "selected_provider": "vipay",
+    "reason": "highest_score",
+    "attempts": [
+      {
+        "provider": "vipay",
+        "decision": "selected",
+        "reason": "highest_score",
+        "details": "score=0.733 [count_share=0.184, volume_share=0.135, cascade=0.100, conversion=0.087, amount_range=0.032, rate_limit=0.080, turnover=0.050, reliability=0.065]"
+      },
+      {
+        "provider": "payflow",
+        "decision": "skipped",
+        "reason": "bank_not_in_list",
+        "details": "bank vtb не в banks"
+      },
+      {
+        "provider": "quickpay",
+        "decision": "skipped",
+        "reason": "lower_score",
+        "details": "score=0.449 ниже выбранного"
+      }
+    ],
+    "simulated_result": "approved",
+    "latency_sec": 38
+  },
+  {
+    "operation_id": "op_133",
+    "selected_provider": "spacepayments",
+    "reason": "fallback_self_provider",
+    "attempts": [
+      {
+        "provider": "vipay",
+        "decision": "skipped",
+        "reason": "bank_not_in_list",
+        "details": "bank gazprombank не в banks"
+      },
+      {
+        "provider": "payflow",
+        "decision": "skipped",
+        "reason": "bank_not_in_list",
+        "details": "bank gazprombank не в banks"
+      },
+      {
+        "provider": "quickpay",
+        "decision": "skipped",
+        "reason": "rejected_by_provider"
+      },
+      {
+        "provider": "spacepayments",
+        "decision": "selected",
+        "reason": "fallback_self_provider",
+        "details": "fallback: пул допустимых внешних провайдеров пуст"
+      }
+    ],
+    "simulated_result": "approved",
+    "latency_sec": 15
+  },
+  {
+    "operation_id": "op_134",
+    "selected_provider": "vipay",
+    "reason": "highest_score",
+    "attempts": [
+      {
+        "provider": "vipay",
+        "decision": "selected",
+        "reason": "highest_score",
+        "details": "score=0.733 [count_share=0.177, volume_share=0.135, cascade=0.100, conversion=0.087, amount_range=0.032, rate_limit=0.080, turnover=0.050, reliability=0.072]"
+      },
+      {
+        "provider": "payflow",
+        "decision": "skipped",
+        "reason": "bank_not_in_list",
+        "details": "bank tinkoff не в banks"
+      },
+      {
+        "provider": "quickpay",
+        "decision": "skipped",
+        "reason": "lower_score",
+        "details": "score=0.450 ниже выбранного"
+      }
+    ],
+    "simulated_result": "approved",
+    "latency_sec": 38
+  },
+  {
+    "operation_id": "op_135",
+    "selected_provider": "payflow",
+    "reason": "only_eligible_provider",
+    "attempts": [
+      {
+        "provider": "vipay",
+        "decision": "skipped",
+        "reason": "amount_below_minimum",
+        "details": "800 < limit_amount_min 1000"
+      },
+      {
+        "provider": "payflow",
+        "decision": "selected",
+        "reason": "only_eligible_provider",
+        "details": "единственный допустимый внешний провайдер"
+      },
+      {
+        "provider": "quickpay",
+        "decision": "skipped",
+        "reason": "amount_below_minimum",
+        "details": "800 < limit_amount_min 1000"
+      }
+    ],
+    "simulated_result": "approved",
+    "latency_sec": 52
+  },
+  {
+    "operation_id": "op_136",
+    "selected_provider": "vipay",
+    "reason": "highest_score",
+    "attempts": [
+      {
+        "provider": "vipay",
+        "decision": "selected",
+        "reason": "highest_score",
+        "details": "score=0.732 [count_share=0.172, volume_share=0.133, cascade=0.100, conversion=0.087, amount_range=0.032, rate_limit=0.080, turnover=0.050, reliability=0.078]"
+      },
+      {
+        "provider": "payflow",
+        "decision": "skipped",
+        "reason": "bank_not_in_list",
+        "details": "bank tinkoff не в banks"
+      },
+      {
+        "provider": "quickpay",
+        "decision": "skipped",
+        "reason": "lower_score",
+        "details": "score=0.460 ниже выбранного"
+      }
+    ],
+    "simulated_result": "approved",
+    "latency_sec": 38
+  },
+  {
+    "operation_id": "op_137",
+    "selected_provider": "quickpay",
+    "reason": "only_eligible_provider",
+    "attempts": [
+      {
+        "provider": "vipay",
+        "decision": "skipped",
+        "reason": "amount_exceeds_limit",
+        "details": "180000 > limit_amount_max 100000"
+      },
+      {
+        "provider": "payflow",
+        "decision": "skipped",
+        "reason": "amount_exceeds_limit",
+        "details": "180000 > limit_amount_max 50000"
+      },
+      {
+        "provider": "quickpay",
+        "decision": "selected",
+        "reason": "only_eligible_provider",
+        "details": "единственный допустимый внешний провайдер"
+      }
+    ],
+    "simulated_result": "approved",
+    "latency_sec": 29
+  },
+  {
+    "operation_id": "op_138",
+    "selected_provider": "spacepayments",
+    "reason": "fallback_self_provider",
+    "attempts": [
+      {
+        "provider": "vipay",
+        "decision": "skipped",
+        "reason": "amount_exceeds_limit",
+        "details": "180000 > limit_amount_max 100000"
+      },
+      {
+        "provider": "payflow",
+        "decision": "skipped",
+        "reason": "amount_exceeds_limit",
+        "details": "180000 > limit_amount_max 50000"
+      },
+      {
+        "provider": "quickpay",
+        "decision": "skipped",
+        "reason": "rejected_by_provider"
+      },
+      {
+        "provider": "spacepayments",
+        "decision": "selected",
+        "reason": "fallback_self_provider",
+        "details": "fallback: пул допустимых внешних провайдеров пуст"
+      }
+    ],
+    "simulated_result": "approved",
+    "latency_sec": 15
+  },
+  {
+    "operation_id": "op_139",
+    "selected_provider": "payflow",
+    "reason": "only_eligible_provider",
+    "attempts": [
+      {
+        "provider": "vipay",
+        "decision": "skipped",
+        "reason": "amount_below_minimum",
+        "details": "900 < limit_amount_min 1000"
+      },
+      {
+        "provider": "payflow",
+        "decision": "selected",
+        "reason": "only_eligible_provider",
+        "details": "единственный допустимый внешний провайдер"
+      },
+      {
+        "provider": "quickpay",
+        "decision": "skipped",
+        "reason": "amount_below_minimum",
+        "details": "900 < limit_amount_min 1000"
+      }
+    ],
+    "simulated_result": "approved",
+    "latency_sec": 52
+  },
+  {
+    "operation_id": "op_140",
+    "selected_provider": "payflow",
+    "reason": "highest_score",
+    "attempts": [
+      {
+        "provider": "vipay",
+        "decision": "skipped",
+        "reason": "bank_not_in_list",
+        "details": "bank alfa не в banks"
+      },
+      {
+        "provider": "payflow",
+        "decision": "selected",
+        "reason": "highest_score",
+        "details": "score=0.711 [count_share=0.167, volume_share=0.147, cascade=0.050, conversion=0.091, amount_range=0.048, rate_limit=0.072, turnover=0.050, reliability=0.086]"
+      },
+      {
+        "provider": "quickpay",
+        "decision": "skipped",
+        "reason": "lower_score",
+        "details": "score=0.467 ниже выбранного"
+      }
+    ],
+    "simulated_result": "approved",
+    "latency_sec": 52
+  },
+  {
+    "operation_id": "op_141",
+    "selected_provider": "payflow",
+    "reason": "highest_score",
+    "attempts": [
+      {
+        "provider": "vipay",
+        "decision": "skipped",
+        "reason": "bank_not_in_list",
+        "details": "bank alfa не в banks"
+      },
+      {
+        "provider": "payflow",
+        "decision": "selected",
+        "reason": "highest_score",
+        "details": "score=0.710 [count_share=0.160, volume_share=0.142, cascade=0.050, conversion=0.091, amount_range=0.048, rate_limit=0.080, turnover=0.050, reliability=0.089]"
+      },
+      {
+        "provider": "quickpay",
+        "decision": "skipped",
+        "reason": "lower_score",
+        "details": "score=0.472 ниже выбранного"
+      }
+    ],
+    "simulated_result": "approved",
+    "latency_sec": 52
+  },
+  {
+    "operation_id": "op_142",
+    "selected_provider": "vipay",
+    "reason": "highest_score",
+    "attempts": [
+      {
+        "provider": "vipay",
+        "decision": "selected",
+        "reason": "highest_score",
+        "details": "score=0.743 [count_share=0.175, volume_share=0.137, cascade=0.100, conversion=0.087, amount_range=0.032, rate_limit=0.080, turnover=0.050, reliability=0.082]"
+      },
+      {
+        "provider": "payflow",
+        "decision": "skipped",
+        "reason": "daily_limit_exceeded",
+        "details": "2998600 + 10000 > 3000000"
+      },
+      {
+        "provider": "quickpay",
+        "decision": "skipped",
+        "reason": "lower_score",
+        "details": "score=0.475 ниже выбранного"
+      }
+    ],
+    "simulated_result": "approved",
+    "latency_sec": 38
+  },
+  {
+    "operation_id": "op_143",
+    "selected_provider": "vipay",
+    "reason": "highest_score",
+    "attempts": [
+      {
+        "provider": "vipay",
+        "decision": "selected",
+        "reason": "highest_score",
+        "details": "score=0.740 [count_share=0.169, volume_share=0.136, cascade=0.100, conversion=0.087, amount_range=0.032, rate_limit=0.080, turnover=0.050, reliability=0.086]"
+      },
+      {
+        "provider": "payflow",
+        "decision": "skipped",
+        "reason": "daily_limit_exceeded",
+        "details": "2998600 + 35000 > 3000000"
+      },
+      {
+        "provider": "quickpay",
+        "decision": "skipped",
+        "reason": "lower_score",
+        "details": "score=0.479 ниже выбранного"
+      }
+    ],
+    "simulated_result": "approved",
+    "latency_sec": 38
+  },
+  {
+    "operation_id": "op_144",
+    "selected_provider": "vipay",
+    "reason": "highest_score",
+    "attempts": [
+      {
+        "provider": "vipay",
+        "decision": "selected",
+        "reason": "highest_score",
+        "details": "score=0.729 [count_share=0.163, volume_share=0.133, cascade=0.100, conversion=0.087, amount_range=0.032, rate_limit=0.075, turnover=0.050, reliability=0.089]"
+      },
+      {
+        "provider": "payflow",
+        "decision": "skipped",
+        "reason": "daily_limit_exceeded",
+        "details": "2998600 + 2000 > 3000000"
+      },
+      {
+        "provider": "quickpay",
+        "decision": "skipped",
+        "reason": "lower_score",
+        "details": "score=0.483 ниже выбранного"
+      }
+    ],
+    "simulated_result": "approved",
+    "latency_sec": 38
+  },
+  {
+    "operation_id": "op_145",
+    "selected_provider": "quickpay",
+    "reason": "only_eligible_provider",
+    "attempts": [
+      {
+        "provider": "vipay",
+        "decision": "skipped",
+        "reason": "bank_not_in_list",
+        "details": "bank alfa не в banks"
+      },
+      {
+        "provider": "payflow",
+        "decision": "skipped",
+        "reason": "daily_limit_exceeded",
+        "details": "2998600 + 10000 > 3000000"
+      },
+      {
+        "provider": "quickpay",
+        "decision": "selected",
+        "reason": "only_eligible_provider",
+        "details": "единственный допустимый внешний провайдер"
+      }
+    ],
+    "simulated_result": "approved",
+    "latency_sec": 29
+  },
+  {
+    "operation_id": "op_146",
+    "selected_provider": "spacepayments",
+    "reason": "fallback_self_provider",
+    "attempts": [
+      {
+        "provider": "vipay",
+        "decision": "skipped",
+        "reason": "amount_below_minimum",
+        "details": "900 < limit_amount_min 1000"
+      },
+      {
+        "provider": "payflow",
+        "decision": "skipped",
+        "reason": "bank_not_in_list",
+        "details": "bank raiffeisen не в banks"
+      },
+      {
+        "provider": "quickpay",
+        "decision": "skipped",
+        "reason": "amount_below_minimum",
+        "details": "900 < limit_amount_min 1000"
+      },
+      {
+        "provider": "spacepayments",
+        "decision": "selected",
+        "reason": "fallback_self_provider",
+        "details": "fallback: пул допустимых внешних провайдеров пуст"
+      }
+    ],
+    "simulated_result": "approved",
+    "latency_sec": 15
+  },
+  {
+    "operation_id": "op_147",
+    "selected_provider": "quickpay",
+    "reason": "only_eligible_provider",
+    "attempts": [
+      {
+        "provider": "vipay",
+        "decision": "skipped",
+        "reason": "bank_not_in_list",
+        "details": "bank raiffeisen не в banks"
+      },
+      {
+        "provider": "payflow",
+        "decision": "skipped",
+        "reason": "daily_limit_exceeded",
+        "details": "2998600 + 5000 > 3000000"
+      },
+      {
+        "provider": "quickpay",
+        "decision": "selected",
+        "reason": "only_eligible_provider",
+        "details": "единственный допустимый внешний провайдер"
+      }
+    ],
+    "simulated_result": "approved",
+    "latency_sec": 29
+  },
+  {
+    "operation_id": "op_148",
+    "selected_provider": "spacepayments",
+    "reason": "fallback_self_provider",
+    "attempts": [
+      {
+        "provider": "vipay",
+        "decision": "skipped",
+        "reason": "bank_not_in_list",
+        "details": "bank alfa не в banks"
+      },
+      {
+        "provider": "payflow",
+        "decision": "skipped",
+        "reason": "daily_limit_exceeded",
+        "details": "2998600 + 15000 > 3000000"
+      },
+      {
+        "provider": "quickpay",
+        "decision": "skipped",
+        "reason": "rejected_by_provider"
+      },
+      {
+        "provider": "spacepayments",
+        "decision": "selected",
+        "reason": "fallback_self_provider",
+        "details": "fallback: пул допустимых внешних провайдеров пуст"
+      }
+    ],
+    "simulated_result": "approved",
+    "latency_sec": 15
+  },
+  {
+    "operation_id": "op_149",
+    "selected_provider": "spacepayments",
+    "reason": "fallback_self_provider",
+    "attempts": [
+      {
+        "provider": "vipay",
+        "decision": "skipped",
+        "reason": "bank_not_in_list",
+        "details": "bank gazprombank не в banks"
+      },
+      {
+        "provider": "payflow",
+        "decision": "skipped",
+        "reason": "amount_exceeds_limit",
+        "details": "80000 > limit_amount_max 50000"
+      },
+      {
+        "provider": "quickpay",
+        "decision": "skipped",
+        "reason": "rejected_by_provider"
+      },
+      {
+        "provider": "spacepayments",
+        "decision": "selected",
+        "reason": "fallback_self_provider",
+        "details": "fallback: пул допустимых внешних провайдеров пуст"
+      }
+    ],
+    "simulated_result": "approved",
+    "latency_sec": 15
+  },
+  {
+    "operation_id": "op_150",
+    "selected_provider": "quickpay",
+    "reason": "only_eligible_provider",
+    "attempts": [
+      {
+        "provider": "vipay",
+        "decision": "skipped",
+        "reason": "bank_not_in_list",
+        "details": "bank raiffeisen не в banks"
+      },
+      {
+        "provider": "payflow",
+        "decision": "skipped",
+        "reason": "daily_limit_exceeded",
+        "details": "2998600 + 42000 > 3000000"
+      },
+      {
+        "provider": "quickpay",
+        "decision": "selected",
+        "reason": "only_eligible_provider",
+        "details": "единственный допустимый внешний провайдер"
+      }
+    ],
+    "simulated_result": "approved",
+    "latency_sec": 29
+  },
+  {
+    "operation_id": "op_151",
+    "selected_provider": "vipay",
+    "reason": "highest_score",
+    "attempts": [
+      {
+        "provider": "vipay",
+        "decision": "selected",
+        "reason": "highest_score",
+        "details": "score=0.744 [count_share=0.169, volume_share=0.135, cascade=0.100, conversion=0.087, amount_range=0.032, rate_limit=0.080, turnover=0.050, reliability=0.091]"
+      },
+      {
+        "provider": "payflow",
+        "decision": "skipped",
+        "reason": "daily_limit_exceeded",
+        "details": "2998600 + 25000 > 3000000"
+      },
+      {
+        "provider": "quickpay",
+        "decision": "skipped",
+        "reason": "lower_score",
+        "details": "score=0.485 ниже выбранного"
+      }
+    ],
+    "simulated_result": "approved",
+    "latency_sec": 38
+  },
+  {
+    "operation_id": "op_152",
+    "selected_provider": "spacepayments",
+    "reason": "fallback_self_provider",
+    "attempts": [
+      {
+        "provider": "vipay",
+        "decision": "skipped",
+        "reason": "bank_not_in_list",
+        "details": "bank raiffeisen не в banks"
+      },
+      {
+        "provider": "payflow",
+        "decision": "skipped",
+        "reason": "daily_limit_exceeded",
+        "details": "2998600 + 15000 > 3000000"
+      },
+      {
+        "provider": "quickpay",
+        "decision": "skipped",
+        "reason": "rejected_by_provider"
+      },
+      {
+        "provider": "spacepayments",
+        "decision": "selected",
+        "reason": "fallback_self_provider",
+        "details": "fallback: пул допустимых внешних провайдеров пуст"
+      }
+    ],
+    "simulated_result": "approved",
+    "latency_sec": 15
+  },
+  {
+    "operation_id": "op_153",
+    "selected_provider": "quickpay",
+    "reason": "only_eligible_provider",
+    "attempts": [
+      {
+        "provider": "vipay",
+        "decision": "skipped",
+        "reason": "bank_not_in_list",
+        "details": "bank raiffeisen не в banks"
+      },
+      {
+        "provider": "payflow",
+        "decision": "skipped",
+        "reason": "daily_limit_exceeded",
+        "details": "2998600 + 2000 > 3000000"
+      },
+      {
+        "provider": "quickpay",
+        "decision": "selected",
+        "reason": "only_eligible_provider",
+        "details": "единственный допустимый внешний провайдер"
+      }
+    ],
+    "simulated_result": "approved",
+    "latency_sec": 29
+  },
+  {
+    "operation_id": "op_154",
+    "selected_provider": "quickpay",
+    "reason": "only_eligible_provider",
+    "attempts": [
+      {
+        "provider": "vipay",
+        "decision": "skipped",
+        "reason": "bank_not_in_list",
+        "details": "bank raiffeisen не в banks"
+      },
+      {
+        "provider": "payflow",
+        "decision": "skipped",
+        "reason": "daily_limit_exceeded",
+        "details": "2998600 + 42000 > 3000000"
+      },
+      {
+        "provider": "quickpay",
+        "decision": "selected",
+        "reason": "only_eligible_provider",
+        "details": "единственный допустимый внешний провайдер"
+      }
+    ],
+    "simulated_result": "approved",
+    "latency_sec": 29
+  },
+  {
+    "operation_id": "op_155",
+    "selected_provider": "quickpay",
+    "reason": "only_eligible_provider",
+    "attempts": [
+      {
+        "provider": "vipay",
+        "decision": "skipped",
+        "reason": "bank_not_in_list",
+        "details": "bank alfa не в banks"
+      },
+      {
+        "provider": "payflow",
+        "decision": "skipped",
+        "reason": "amount_exceeds_limit",
+        "details": "95000 > limit_amount_max 50000"
+      },
+      {
+        "provider": "quickpay",
+        "decision": "selected",
+        "reason": "only_eligible_provider",
+        "details": "единственный допустимый внешний провайдер"
+      }
+    ],
+    "simulated_result": "approved",
+    "latency_sec": 29
+  },
+  {
+    "operation_id": "op_156",
+    "selected_provider": "quickpay",
+    "reason": "only_eligible_provider",
+    "attempts": [
+      {
+        "provider": "vipay",
+        "decision": "skipped",
+        "reason": "amount_exceeds_limit",
+        "details": "150000 > limit_amount_max 100000"
+      },
+      {
+        "provider": "payflow",
+        "decision": "skipped",
+        "reason": "amount_exceeds_limit",
+        "details": "150000 > limit_amount_max 50000"
+      },
+      {
+        "provider": "quickpay",
+        "decision": "selected",
+        "reason": "only_eligible_provider",
+        "details": "единственный допустимый внешний провайдер"
+      }
+    ],
+    "simulated_result": "approved",
+    "latency_sec": 29
+  },
+  {
+    "operation_id": "op_157",
+    "selected_provider": "quickpay",
+    "reason": "only_eligible_provider",
+    "attempts": [
+      {
+        "provider": "vipay",
+        "decision": "skipped",
+        "reason": "bank_not_in_list",
+        "details": "bank gazprombank не в banks"
+      },
+      {
+        "provider": "payflow",
+        "decision": "skipped",
+        "reason": "daily_limit_exceeded",
+        "details": "2998600 + 10000 > 3000000"
+      },
+      {
+        "provider": "quickpay",
+        "decision": "selected",
+        "reason": "only_eligible_provider",
+        "details": "единственный допустимый внешний провайдер"
+      }
+    ],
+    "simulated_result": "approved",
+    "latency_sec": 29
+  },
+  {
+    "operation_id": "op_158",
+    "selected_provider": "quickpay",
+    "reason": "only_eligible_provider",
+    "attempts": [
+      {
+        "provider": "vipay",
+        "decision": "skipped",
+        "reason": "bank_not_in_list",
+        "details": "bank gazprombank не в banks"
+      },
+      {
+        "provider": "payflow",
+        "decision": "skipped",
+        "reason": "daily_limit_exceeded",
+        "details": "2998600 + 42000 > 3000000"
+      },
+      {
+        "provider": "quickpay",
+        "decision": "selected",
+        "reason": "only_eligible_provider",
+        "details": "единственный допустимый внешний провайдер"
+      }
+    ],
+    "simulated_result": "approved",
+    "latency_sec": 29
+  },
+  {
+    "operation_id": "op_159",
+    "selected_provider": "spacepayments",
+    "reason": "fallback_self_provider",
+    "attempts": [
+      {
+        "provider": "vipay",
+        "decision": "skipped",
+        "reason": "bank_not_in_list",
+        "details": "bank gazprombank не в banks"
+      },
+      {
+        "provider": "payflow",
+        "decision": "skipped",
+        "reason": "daily_limit_exceeded",
+        "details": "2998600 + 48000 > 3000000"
+      },
+      {
+        "provider": "quickpay",
+        "decision": "skipped",
+        "reason": "rejected_by_provider"
+      },
+      {
+        "provider": "spacepayments",
+        "decision": "selected",
+        "reason": "fallback_self_provider",
+        "details": "fallback: пул допустимых внешних провайдеров пуст"
+      }
+    ],
+    "simulated_result": "approved",
+    "latency_sec": 15
+  },
+  {
+    "operation_id": "op_160",
+    "selected_provider": "quickpay",
+    "reason": "only_eligible_provider",
+    "attempts": [
+      {
+        "provider": "vipay",
+        "decision": "skipped",
+        "reason": "amount_exceeds_limit",
+        "details": "120000 > limit_amount_max 100000"
+      },
+      {
+        "provider": "payflow",
+        "decision": "skipped",
+        "reason": "amount_exceeds_limit",
+        "details": "120000 > limit_amount_max 50000"
+      },
+      {
+        "provider": "quickpay",
+        "decision": "selected",
+        "reason": "only_eligible_provider",
+        "details": "единственный допустимый внешний провайдер"
+      }
+    ],
+    "simulated_result": "approved",
+    "latency_sec": 29
+  },
+  {
+    "operation_id": "op_161",
+    "selected_provider": "spacepayments",
+    "reason": "fallback_self_provider",
+    "attempts": [
+      {
+        "provider": "vipay",
+        "decision": "skipped",
+        "reason": "amount_exceeds_limit",
+        "details": "150000 > limit_amount_max 100000"
+      },
+      {
+        "provider": "payflow",
+        "decision": "skipped",
+        "reason": "amount_exceeds_limit",
+        "details": "150000 > limit_amount_max 50000"
+      },
+      {
+        "provider": "quickpay",
+        "decision": "skipped",
+        "reason": "rejected_by_provider"
+      },
+      {
+        "provider": "spacepayments",
+        "decision": "selected",
+        "reason": "fallback_self_provider",
+        "details": "fallback: пул допустимых внешних провайдеров пуст"
+      }
+    ],
+    "simulated_result": "approved",
+    "latency_sec": 15
+  },
+  {
+    "operation_id": "op_162",
+    "selected_provider": "vipay",
+    "reason": "highest_score",
+    "attempts": [
+      {
+        "provider": "vipay",
+        "decision": "selected",
+        "reason": "highest_score",
+        "details": "score=0.761 [count_share=0.178, volume_share=0.141, cascade=0.100, conversion=0.087, amount_range=0.032, rate_limit=0.080, turnover=0.050, reliability=0.093]"
+      },
+      {
+        "provider": "payflow",
+        "decision": "skipped",
+        "reason": "daily_limit_exceeded",
+        "details": "2998600 + 30000 > 3000000"
+      },
+      {
+        "provider": "quickpay",
+        "decision": "skipped",
+        "reason": "lower_score",
+        "details": "score=0.464 ниже выбранного"
+      }
+    ],
+    "simulated_result": "approved",
+    "latency_sec": 38
+  },
+  {
+    "operation_id": "op_163",
+    "selected_provider": "quickpay",
+    "reason": "only_eligible_provider",
+    "attempts": [
+      {
+        "provider": "vipay",
+        "decision": "skipped",
+        "reason": "bank_not_in_list",
+        "details": "bank gazprombank не в banks"
+      },
+      {
+        "provider": "payflow",
+        "decision": "skipped",
+        "reason": "daily_limit_exceeded",
+        "details": "2998600 + 40000 > 3000000"
+      },
+      {
+        "provider": "quickpay",
+        "decision": "selected",
+        "reason": "only_eligible_provider",
+        "details": "единственный допустимый внешний провайдер"
+      }
+    ],
+    "simulated_result": "approved",
+    "latency_sec": 29
+  },
+  {
+    "operation_id": "op_164",
+    "selected_provider": "payflow",
+    "reason": "only_eligible_provider",
+    "attempts": [
+      {
+        "provider": "vipay",
+        "decision": "skipped",
+        "reason": "amount_below_minimum",
+        "details": "800 < limit_amount_min 1000"
+      },
+      {
+        "provider": "payflow",
+        "decision": "selected",
+        "reason": "only_eligible_provider",
+        "details": "единственный допустимый внешний провайдер"
+      },
+      {
+        "provider": "quickpay",
+        "decision": "skipped",
+        "reason": "amount_below_minimum",
+        "details": "800 < limit_amount_min 1000"
+      }
+    ],
+    "simulated_result": "approved",
+    "latency_sec": 52
+  },
+  {
+    "operation_id": "op_165",
+    "selected_provider": "quickpay",
+    "reason": "only_eligible_provider",
+    "attempts": [
+      {
+        "provider": "vipay",
+        "decision": "skipped",
+        "reason": "bank_not_in_list",
+        "details": "bank gazprombank не в banks"
+      },
+      {
+        "provider": "payflow",
+        "decision": "skipped",
+        "reason": "daily_limit_exceeded",
+        "details": "2999400 + 3000 > 3000000"
+      },
+      {
+        "provider": "quickpay",
+        "decision": "selected",
+        "reason": "only_eligible_provider",
+        "details": "единственный допустимый внешний провайдер"
+      }
+    ],
+    "simulated_result": "approved",
+    "latency_sec": 29
+  },
+  {
+    "operation_id": "op_166",
+    "selected_provider": "spacepayments",
+    "reason": "fallback_self_provider",
+    "attempts": [
+      {
+        "provider": "vipay",
+        "decision": "skipped",
+        "reason": "amount_exceeds_limit",
+        "details": "120000 > limit_amount_max 100000"
+      },
+      {
+        "provider": "payflow",
+        "decision": "skipped",
+        "reason": "amount_exceeds_limit",
+        "details": "120000 > limit_amount_max 50000"
+      },
+      {
+        "provider": "quickpay",
+        "decision": "skipped",
+        "reason": "rejected_by_provider"
+      },
+      {
+        "provider": "spacepayments",
+        "decision": "selected",
+        "reason": "fallback_self_provider",
+        "details": "fallback: пул допустимых внешних провайдеров пуст"
+      }
+    ],
+    "simulated_result": "approved",
+    "latency_sec": 15
+  },
+  {
+    "operation_id": "op_167",
+    "selected_provider": "vipay",
+    "reason": "highest_score",
+    "attempts": [
+      {
+        "provider": "vipay",
+        "decision": "selected",
+        "reason": "highest_score",
+        "details": "score=0.762 [count_share=0.178, volume_share=0.141, cascade=0.100, conversion=0.087, amount_range=0.032, rate_limit=0.080, turnover=0.050, reliability=0.094]"
+      },
+      {
+        "provider": "payflow",
+        "decision": "skipped",
+        "reason": "daily_limit_exceeded",
+        "details": "2999400 + 25000 > 3000000"
+      },
+      {
+        "provider": "quickpay",
+        "decision": "skipped",
+        "reason": "lower_score",
+        "details": "score=0.468 ниже выбранного"
+      }
+    ],
+    "simulated_result": "approved",
+    "latency_sec": 38
+  },
+  {
+    "operation_id": "op_168",
+    "selected_provider": "quickpay",
+    "reason": "highest_score",
+    "attempts": [
+      {
+        "provider": "vipay",
+        "decision": "skipped",
+        "reason": "rejected_by_provider"
+      },
+      {
+        "provider": "payflow",
+        "decision": "skipped",
+        "reason": "amount_exceeds_limit",
+        "details": "52000 > limit_amount_max 50000"
+      },
+      {
+        "provider": "quickpay",
+        "decision": "selected",
+        "reason": "highest_score",
+        "details": "score=0.470 [count_share=0.095, volume_share=0.042, cascade=0.033, conversion=0.079, amount_range=0.032, rate_limit=0.080, turnover=0.050, reliability=0.059]"
+      }
+    ],
+    "simulated_result": "approved",
+    "latency_sec": 29
+  },
+  {
+    "operation_id": "op_169",
+    "selected_provider": "quickpay",
+    "reason": "highest_score",
+    "attempts": [
+      {
+        "provider": "vipay",
+        "decision": "skipped",
+        "reason": "rejected_by_provider"
+      },
+      {
+        "provider": "payflow",
+        "decision": "skipped",
+        "reason": "daily_limit_exceeded",
+        "details": "2999400 + 10000 > 3000000"
+      },
+      {
+        "provider": "quickpay",
+        "decision": "selected",
+        "reason": "highest_score",
+        "details": "score=0.474 [count_share=0.092, volume_share=0.041, cascade=0.033, conversion=0.079, amount_range=0.032, rate_limit=0.080, turnover=0.050, reliability=0.067]"
+      }
+    ],
+    "simulated_result": "approved",
+    "latency_sec": 29
+  },
+  {
+    "operation_id": "op_170",
+    "selected_provider": "vipay",
+    "reason": "highest_score",
+    "attempts": [
+      {
+        "provider": "vipay",
+        "decision": "selected",
+        "reason": "highest_score",
+        "details": "score=0.727 [count_share=0.177, volume_share=0.140, cascade=0.100, conversion=0.087, amount_range=0.032, rate_limit=0.080, turnover=0.050, reliability=0.061]"
+      },
+      {
+        "provider": "payflow",
+        "decision": "skipped",
+        "reason": "daily_limit_exceeded",
+        "details": "2999400 + 1500 > 3000000"
+      },
+      {
+        "provider": "quickpay",
+        "decision": "skipped",
+        "reason": "lower_score",
+        "details": "score=0.474 ниже выбранного"
+      }
+    ],
+    "simulated_result": "approved",
+    "latency_sec": 38
+  },
+  {
+    "operation_id": "op_171",
+    "selected_provider": "vipay",
+    "reason": "highest_score",
+    "attempts": [
+      {
+        "provider": "vipay",
+        "decision": "selected",
+        "reason": "highest_score",
+        "details": "score=0.731 [count_share=0.173, volume_share=0.140, cascade=0.100, conversion=0.087, amount_range=0.032, rate_limit=0.080, turnover=0.050, reliability=0.069]"
+      },
+      {
+        "provider": "payflow",
+        "decision": "skipped",
+        "reason": "daily_limit_exceeded",
+        "details": "2999400 + 3000 > 3000000"
+      },
+      {
+        "provider": "quickpay",
+        "decision": "skipped",
+        "reason": "lower_score",
+        "details": "score=0.480 ниже выбранного"
+      }
+    ],
+    "simulated_result": "approved",
+    "latency_sec": 38
+  },
+  {
+    "operation_id": "op_172",
+    "selected_provider": "vipay",
+    "reason": "highest_score",
+    "attempts": [
+      {
+        "provider": "vipay",
+        "decision": "selected",
+        "reason": "highest_score",
+        "details": "score=0.728 [count_share=0.170, volume_share=0.139, cascade=0.100, conversion=0.087, amount_range=0.032, rate_limit=0.075, turnover=0.050, reliability=0.075]"
+      },
+      {
+        "provider": "payflow",
+        "decision": "skipped",
+        "reason": "daily_limit_exceeded",
+        "details": "2999400 + 8000 > 3000000"
+      },
+      {
+        "provider": "quickpay",
+        "decision": "skipped",
+        "reason": "lower_score",
+        "details": "score=0.481 ниже выбранного"
+      }
+    ],
+    "simulated_result": "approved",
+    "latency_sec": 38
+  },
+  {
+    "operation_id": "op_173",
+    "selected_provider": "quickpay",
+    "reason": "only_eligible_provider",
+    "attempts": [
+      {
+        "provider": "vipay",
+        "decision": "skipped",
+        "reason": "bank_not_in_list",
+        "details": "bank alfa не в banks"
+      },
+      {
+        "provider": "payflow",
+        "decision": "skipped",
+        "reason": "daily_limit_exceeded",
+        "details": "2999400 + 12000 > 3000000"
+      },
+      {
+        "provider": "quickpay",
+        "decision": "selected",
+        "reason": "only_eligible_provider",
+        "details": "единственный допустимый внешний провайдер"
+      }
+    ],
+    "simulated_result": "approved",
+    "latency_sec": 29
+  },
+  {
+    "operation_id": "op_174",
+    "selected_provider": "vipay",
+    "reason": "highest_score",
+    "attempts": [
+      {
+        "provider": "vipay",
+        "decision": "selected",
+        "reason": "highest_score",
+        "details": "score=0.736 [count_share=0.168, volume_share=0.139, cascade=0.100, conversion=0.087, amount_range=0.032, rate_limit=0.080, turnover=0.050, reliability=0.080]"
+      },
+      {
+        "provider": "payflow",
+        "decision": "skipped",
+        "reason": "daily_limit_exceeded",
+        "details": "2999400 + 8000 > 3000000"
+      },
+      {
+        "provider": "quickpay",
+        "decision": "skipped",
+        "reason": "lower_score",
+        "details": "score=0.482 ниже выбранного"
+      }
+    ],
+    "simulated_result": "approved",
+    "latency_sec": 38
+  },
+  {
+    "operation_id": "op_175",
+    "selected_provider": "quickpay",
+    "reason": "only_eligible_provider",
+    "attempts": [
+      {
+        "provider": "vipay",
+        "decision": "skipped",
+        "reason": "bank_not_in_list",
+        "details": "bank alfa не в banks"
+      },
+      {
+        "provider": "payflow",
+        "decision": "skipped",
+        "reason": "daily_limit_exceeded",
+        "details": "2999400 + 10000 > 3000000"
+      },
+      {
+        "provider": "quickpay",
+        "decision": "selected",
+        "reason": "only_eligible_provider",
+        "details": "единственный допустимый внешний провайдер"
+      }
+    ],
+    "simulated_result": "approved",
+    "latency_sec": 29
+  },
+  {
+    "operation_id": "op_176",
+    "selected_provider": "spacepayments",
+    "reason": "fallback_self_provider",
+    "attempts": [
+      {
+        "provider": "vipay",
+        "decision": "skipped",
+        "reason": "amount_below_minimum",
+        "details": "900 < limit_amount_min 1000"
+      },
+      {
+        "provider": "payflow",
+        "decision": "skipped",
+        "reason": "daily_limit_exceeded",
+        "details": "2999400 + 900 > 3000000"
+      },
+      {
+        "provider": "quickpay",
+        "decision": "skipped",
+        "reason": "amount_below_minimum",
+        "details": "900 < limit_amount_min 1000"
+      },
+      {
+        "provider": "spacepayments",
+        "decision": "selected",
+        "reason": "fallback_self_provider",
+        "details": "fallback: пул допустимых внешних провайдеров пуст"
+      }
+    ],
+    "simulated_result": "approved",
+    "latency_sec": 15
+  },
+  {
+    "operation_id": "op_177",
+    "selected_provider": "spacepayments",
+    "reason": "fallback_self_provider",
+    "attempts": [
+      {
+        "provider": "vipay",
+        "decision": "skipped",
+        "reason": "bank_not_in_list",
+        "details": "bank raiffeisen не в banks"
+      },
+      {
+        "provider": "payflow",
+        "decision": "skipped",
+        "reason": "daily_limit_exceeded",
+        "details": "2999400 + 42000 > 3000000"
+      },
+      {
+        "provider": "quickpay",
+        "decision": "skipped",
+        "reason": "rejected_by_provider"
+      },
+      {
+        "provider": "spacepayments",
+        "decision": "selected",
+        "reason": "fallback_self_provider",
+        "details": "fallback: пул допустимых внешних провайдеров пуст"
+      }
+    ],
+    "simulated_result": "approved",
+    "latency_sec": 15
+  },
+  {
+    "operation_id": "op_178",
+    "selected_provider": "quickpay",
+    "reason": "only_eligible_provider",
+    "attempts": [
+      {
+        "provider": "vipay",
+        "decision": "skipped",
+        "reason": "amount_exceeds_limit",
+        "details": "120000 > limit_amount_max 100000"
+      },
+      {
+        "provider": "payflow",
+        "decision": "skipped",
+        "reason": "amount_exceeds_limit",
+        "details": "120000 > limit_amount_max 50000"
+      },
+      {
+        "provider": "quickpay",
+        "decision": "selected",
+        "reason": "only_eligible_provider",
+        "details": "единственный допустимый внешний провайдер"
+      }
+    ],
+    "simulated_result": "approved",
+    "latency_sec": 29
+  },
+  {
+    "operation_id": "op_179",
+    "selected_provider": "quickpay",
+    "reason": "only_eligible_provider",
+    "attempts": [
+      {
+        "provider": "vipay",
+        "decision": "skipped",
+        "reason": "bank_not_in_list",
+        "details": "bank alfa не в banks"
+      },
+      {
+        "provider": "payflow",
+        "decision": "skipped",
+        "reason": "daily_limit_exceeded",
+        "details": "2999400 + 1500 > 3000000"
+      },
+      {
+        "provider": "quickpay",
+        "decision": "selected",
+        "reason": "only_eligible_provider",
+        "details": "единственный допустимый внешний провайдер"
+      }
+    ],
+    "simulated_result": "approved",
+    "latency_sec": 29
+  },
+  {
+    "operation_id": "op_180",
+    "selected_provider": "quickpay",
+    "reason": "only_eligible_provider",
+    "attempts": [
+      {
+        "provider": "vipay",
+        "decision": "skipped",
+        "reason": "amount_exceeds_limit",
+        "details": "180000 > limit_amount_max 100000"
+      },
+      {
+        "provider": "payflow",
+        "decision": "skipped",
+        "reason": "amount_exceeds_limit",
+        "details": "180000 > limit_amount_max 50000"
+      },
+      {
+        "provider": "quickpay",
+        "decision": "selected",
+        "reason": "only_eligible_provider",
+        "details": "единственный допустимый внешний провайдер"
+      }
+    ],
+    "simulated_result": "approved",
+    "latency_sec": 29
+  },
+  {
+    "operation_id": "op_181",
+    "selected_provider": "vipay",
+    "reason": "highest_score",
+    "attempts": [
+      {
+        "provider": "vipay",
+        "decision": "selected",
+        "reason": "highest_score",
+        "details": "score=0.745 [count_share=0.171, volume_share=0.141, cascade=0.100, conversion=0.087, amount_range=0.032, rate_limit=0.080, turnover=0.050, reliability=0.084]"
+      },
+      {
+        "provider": "payflow",
+        "decision": "skipped",
+        "reason": "daily_limit_exceeded",
+        "details": "2999400 + 1500 > 3000000"
+      },
+      {
+        "provider": "quickpay",
+        "decision": "skipped",
+        "reason": "lower_score",
+        "details": "score=0.478 ниже выбранного"
+      }
+    ],
+    "simulated_result": "approved",
+    "latency_sec": 38
+  },
+  {
+    "operation_id": "op_182",
+    "selected_provider": "quickpay",
+    "reason": "only_eligible_provider",
+    "attempts": [
+      {
+        "provider": "vipay",
+        "decision": "skipped",
+        "reason": "bank_not_in_list",
+        "details": "bank gazprombank не в banks"
+      },
+      {
+        "provider": "payflow",
+        "decision": "skipped",
+        "reason": "daily_limit_exceeded",
+        "details": "2999400 + 1500 > 3000000"
+      },
+      {
+        "provider": "quickpay",
+        "decision": "selected",
+        "reason": "only_eligible_provider",
+        "details": "единственный допустимый внешний провайдер"
+      }
+    ],
+    "simulated_result": "approved",
+    "latency_sec": 29
+  },
+  {
+    "operation_id": "op_183",
+    "selected_provider": "quickpay",
+    "reason": "only_eligible_provider",
+    "attempts": [
+      {
+        "provider": "vipay",
+        "decision": "skipped",
+        "reason": "bank_not_in_list",
+        "details": "bank raiffeisen не в banks"
+      },
+      {
+        "provider": "payflow",
+        "decision": "skipped",
+        "reason": "daily_limit_exceeded",
+        "details": "2999400 + 40000 > 3000000"
+      },
+      {
+        "provider": "quickpay",
+        "decision": "selected",
+        "reason": "only_eligible_provider",
+        "details": "единственный допустимый внешний провайдер"
+      }
+    ],
+    "simulated_result": "approved",
+    "latency_sec": 29
+  },
+  {
+    "operation_id": "op_184",
+    "selected_provider": "vipay",
+    "reason": "highest_score",
+    "attempts": [
+      {
+        "provider": "vipay",
+        "decision": "selected",
+        "reason": "highest_score",
+        "details": "score=0.747 [count_share=0.170, volume_share=0.141, cascade=0.100, conversion=0.087, amount_range=0.032, rate_limit=0.080, turnover=0.050, reliability=0.087]"
+      },
+      {
+        "provider": "payflow",
+        "decision": "skipped",
+        "reason": "daily_limit_exceeded",
+        "details": "2999400 + 1500 > 3000000"
+      },
+      {
+        "provider": "quickpay",
+        "decision": "skipped",
+        "reason": "lower_score",
+        "details": "score=0.476 ниже выбранного"
+      }
+    ],
+    "simulated_result": "approved",
+    "latency_sec": 38
+  },
+  {
+    "operation_id": "op_185",
+    "selected_provider": "vipay",
+    "reason": "highest_score",
+    "attempts": [
+      {
+        "provider": "vipay",
+        "decision": "selected",
+        "reason": "highest_score",
+        "details": "score=0.747 [count_share=0.167, volume_share=0.141, cascade=0.100, conversion=0.087, amount_range=0.032, rate_limit=0.080, turnover=0.050, reliability=0.090]"
+      },
+      {
+        "provider": "payflow",
+        "decision": "skipped",
+        "reason": "daily_limit_exceeded",
+        "details": "2999400 + 3000 > 3000000"
+      },
+      {
+        "provider": "quickpay",
+        "decision": "skipped",
+        "reason": "lower_score",
+        "details": "score=0.482 ниже выбранного"
+      }
+    ],
+    "simulated_result": "approved",
+    "latency_sec": 38
+  },
+  {
+    "operation_id": "op_186",
+    "selected_provider": "quickpay",
+    "reason": "only_eligible_provider",
+    "attempts": [
+      {
+        "provider": "vipay",
+        "decision": "skipped",
+        "reason": "bank_not_in_list",
+        "details": "bank raiffeisen не в banks"
+      },
+      {
+        "provider": "payflow",
+        "decision": "skipped",
+        "reason": "amount_exceeds_limit",
+        "details": "95000 > limit_amount_max 50000"
+      },
+      {
+        "provider": "quickpay",
+        "decision": "selected",
+        "reason": "only_eligible_provider",
+        "details": "единственный допустимый внешний провайдер"
+      }
+    ],
+    "simulated_result": "approved",
+    "latency_sec": 29
+  },
+  {
+    "operation_id": "op_187",
+    "selected_provider": "spacepayments",
+    "reason": "fallback_self_provider",
+    "attempts": [
+      {
+        "provider": "vipay",
+        "decision": "skipped",
+        "reason": "rejected_by_provider"
+      },
+      {
+        "provider": "payflow",
+        "decision": "skipped",
+        "reason": "daily_limit_exceeded",
+        "details": "2999400 + 8000 > 3000000"
+      },
+      {
+        "provider": "quickpay",
+        "decision": "skipped",
+        "reason": "rejected_by_provider"
+      },
+      {
+        "provider": "spacepayments",
+        "decision": "selected",
+        "reason": "fallback_self_provider",
+        "details": "fallback: пул допустимых внешних провайдеров пуст"
+      }
+    ],
+    "simulated_result": "approved",
+    "latency_sec": 15
+  },
+  {
+    "operation_id": "op_188",
+    "selected_provider": "vipay",
+    "reason": "highest_score",
+    "attempts": [
+      {
+        "provider": "vipay",
+        "decision": "selected",
+        "reason": "highest_score",
+        "details": "score=0.730 [count_share=0.166, volume_share=0.142, cascade=0.100, conversion=0.087, amount_range=0.032, rate_limit=0.080, turnover=0.050, reliability=0.073]"
+      },
+      {
+        "provider": "payflow",
+        "decision": "skipped",
+        "reason": "daily_limit_exceeded",
+        "details": "2999400 + 12000 > 3000000"
+      },
+      {
+        "provider": "quickpay",
+        "decision": "skipped",
+        "reason": "lower_score",
+        "details": "score=0.465 ниже выбранного"
+      }
+    ],
+    "simulated_result": "approved",
+    "latency_sec": 38
+  },
+  {
+    "operation_id": "op_189",
+    "selected_provider": "quickpay",
+    "reason": "only_eligible_provider",
+    "attempts": [
+      {
+        "provider": "vipay",
+        "decision": "skipped",
+        "reason": "bank_not_in_list",
+        "details": "bank alfa не в banks"
+      },
+      {
+        "provider": "payflow",
+        "decision": "skipped",
+        "reason": "daily_limit_exceeded",
+        "details": "2999400 + 15000 > 3000000"
+      },
+      {
+        "provider": "quickpay",
+        "decision": "selected",
+        "reason": "only_eligible_provider",
+        "details": "единственный допустимый внешний провайдер"
+      }
+    ],
+    "simulated_result": "approved",
+    "latency_sec": 29
+  },
+  {
+    "operation_id": "op_190",
+    "selected_provider": "spacepayments",
+    "reason": "fallback_self_provider",
+    "attempts": [
+      {
+        "provider": "vipay",
+        "decision": "skipped",
+        "reason": "amount_below_minimum",
+        "details": "900 < limit_amount_min 1000"
+      },
+      {
+        "provider": "payflow",
+        "decision": "skipped",
+        "reason": "daily_limit_exceeded",
+        "details": "2999400 + 900 > 3000000"
+      },
+      {
+        "provider": "quickpay",
+        "decision": "skipped",
+        "reason": "amount_below_minimum",
+        "details": "900 < limit_amount_min 1000"
+      },
+      {
+        "provider": "spacepayments",
+        "decision": "selected",
+        "reason": "fallback_self_provider",
+        "details": "fallback: пул допустимых внешних провайдеров пуст"
+      }
+    ],
+    "simulated_result": "approved",
+    "latency_sec": 15
+  },
+  {
+    "operation_id": "op_191",
+    "selected_provider": "vipay",
+    "reason": "highest_score",
+    "attempts": [
+      {
+        "provider": "vipay",
+        "decision": "selected",
+        "reason": "highest_score",
+        "details": "score=0.735 [count_share=0.166, volume_share=0.141, cascade=0.100, conversion=0.087, amount_range=0.032, rate_limit=0.080, turnover=0.050, reliability=0.079]"
+      },
+      {
+        "provider": "payflow",
+        "decision": "skipped",
+        "reason": "daily_limit_exceeded",
+        "details": "2999400 + 8000 > 3000000"
+      },
+      {
+        "provider": "quickpay",
+        "decision": "skipped",
+        "reason": "lower_score",
+        "details": "score=0.471 ниже выбранного"
+      }
+    ],
+    "simulated_result": "approved",
+    "latency_sec": 38
+  },
+  {
+    "operation_id": "op_192",
+    "selected_provider": "spacepayments",
+    "reason": "fallback_self_provider",
+    "attempts": [
+      {
+        "provider": "vipay",
+        "decision": "skipped",
+        "reason": "bank_not_in_list",
+        "details": "bank gazprombank не в banks"
+      },
+      {
+        "provider": "payflow",
+        "decision": "skipped",
+        "reason": "amount_exceeds_limit",
+        "details": "55000 > limit_amount_max 50000"
+      },
+      {
+        "provider": "quickpay",
+        "decision": "skipped",
+        "reason": "rejected_by_provider"
+      },
+      {
+        "provider": "spacepayments",
+        "decision": "selected",
+        "reason": "fallback_self_provider",
+        "details": "fallback: пул допустимых внешних провайдеров пуст"
+      }
+    ],
+    "simulated_result": "approved",
+    "latency_sec": 15
+  },
+  {
+    "operation_id": "op_193",
+    "selected_provider": "quickpay",
+    "reason": "only_eligible_provider",
+    "attempts": [
+      {
+        "provider": "vipay",
+        "decision": "skipped",
+        "reason": "bank_not_in_list",
+        "details": "bank raiffeisen не в banks"
+      },
+      {
+        "provider": "payflow",
+        "decision": "skipped",
+        "reason": "daily_limit_exceeded",
+        "details": "2999400 + 2000 > 3000000"
+      },
+      {
+        "provider": "quickpay",
+        "decision": "selected",
+        "reason": "only_eligible_provider",
+        "details": "единственный допустимый внешний провайдер"
+      }
+    ],
+    "simulated_result": "approved",
+    "latency_sec": 29
+  },
+  {
+    "operation_id": "op_194",
+    "selected_provider": "quickpay",
+    "reason": "only_eligible_provider",
+    "attempts": [
+      {
+        "provider": "vipay",
+        "decision": "skipped",
+        "reason": "bank_not_in_list",
+        "details": "bank gazprombank не в banks"
+      },
+      {
+        "provider": "payflow",
+        "decision": "skipped",
+        "reason": "daily_limit_exceeded",
+        "details": "2999400 + 3000 > 3000000"
+      },
+      {
+        "provider": "quickpay",
+        "decision": "selected",
+        "reason": "only_eligible_provider",
+        "details": "единственный допустимый внешний провайдер"
+      }
+    ],
+    "simulated_result": "approved",
+    "latency_sec": 29
+  },
+  {
+    "operation_id": "op_195",
+    "selected_provider": "vipay",
+    "reason": "highest_score",
+    "attempts": [
+      {
+        "provider": "vipay",
+        "decision": "selected",
+        "reason": "highest_score",
+        "details": "score=0.739 [count_share=0.166, volume_share=0.141, cascade=0.100, conversion=0.087, amount_range=0.032, rate_limit=0.080, turnover=0.050, reliability=0.083]"
+      },
+      {
+        "provider": "payflow",
+        "decision": "skipped",
+        "reason": "daily_limit_exceeded",
+        "details": "2999400 + 40000 > 3000000"
+      },
+      {
+        "provider": "quickpay",
+        "decision": "skipped",
+        "reason": "lower_score",
+        "details": "score=0.470 ниже выбранного"
+      }
+    ],
+    "simulated_result": "approved",
+    "latency_sec": 38
+  },
+  {
+    "operation_id": "op_196",
+    "selected_provider": "spacepayments",
+    "reason": "fallback_self_provider",
+    "attempts": [
+      {
+        "provider": "vipay",
+        "decision": "skipped",
+        "reason": "bank_not_in_list",
+        "details": "bank gazprombank не в banks"
+      },
+      {
+        "provider": "payflow",
+        "decision": "skipped",
+        "reason": "daily_limit_exceeded",
+        "details": "2999400 + 2000 > 3000000"
+      },
+      {
+        "provider": "quickpay",
+        "decision": "skipped",
+        "reason": "rejected_by_provider"
+      },
+      {
+        "provider": "spacepayments",
+        "decision": "selected",
+        "reason": "fallback_self_provider",
+        "details": "fallback: пул допустимых внешних провайдеров пуст"
+      }
+    ],
+    "simulated_result": "approved",
+    "latency_sec": 15
+  },
+  {
+    "operation_id": "op_197",
+    "selected_provider": "vipay",
+    "reason": "highest_score",
+    "attempts": [
+      {
+        "provider": "vipay",
+        "decision": "selected",
+        "reason": "highest_score",
+        "details": "score=0.739 [count_share=0.164, volume_share=0.140, cascade=0.100, conversion=0.087, amount_range=0.032, rate_limit=0.080, turnover=0.050, reliability=0.086]"
+      },
+      {
+        "provider": "payflow",
+        "decision": "skipped",
+        "reason": "daily_limit_exceeded",
+        "details": "2999400 + 8000 > 3000000"
+      },
+      {
+        "provider": "quickpay",
+        "decision": "skipped",
+        "reason": "lower_score",
+        "details": "score=0.458 ниже выбранного"
+      }
+    ],
+    "simulated_result": "approved",
+    "latency_sec": 38
+  },
+  {
+    "operation_id": "op_198",
+    "selected_provider": "quickpay",
+    "reason": "only_eligible_provider",
+    "attempts": [
+      {
+        "provider": "vipay",
+        "decision": "skipped",
+        "reason": "bank_not_in_list",
+        "details": "bank raiffeisen не в banks"
+      },
+      {
+        "provider": "payflow",
+        "decision": "skipped",
+        "reason": "amount_exceeds_limit",
+        "details": "52000 > limit_amount_max 50000"
+      },
+      {
+        "provider": "quickpay",
+        "decision": "selected",
+        "reason": "only_eligible_provider",
+        "details": "единственный допустимый внешний провайдер"
+      }
+    ],
+    "simulated_result": "approved",
+    "latency_sec": 29
+  },
+  {
+    "operation_id": "op_199",
+    "selected_provider": "spacepayments",
+    "reason": "fallback_self_provider",
+    "attempts": [
+      {
+        "provider": "vipay",
+        "decision": "skipped",
+        "reason": "amount_below_minimum",
+        "details": "900 < limit_amount_min 1000"
+      },
+      {
+        "provider": "payflow",
+        "decision": "skipped",
+        "reason": "daily_limit_exceeded",
+        "details": "2999400 + 900 > 3000000"
+      },
+      {
+        "provider": "quickpay",
+        "decision": "skipped",
+        "reason": "amount_below_minimum",
+        "details": "900 < limit_amount_min 1000"
+      },
+      {
+        "provider": "spacepayments",
+        "decision": "selected",
+        "reason": "fallback_self_provider",
+        "details": "fallback: пул допустимых внешних провайдеров пуст"
+      }
+    ],
+    "simulated_result": "approved",
+    "latency_sec": 15
+  },
+  {
+    "operation_id": "op_200",
+    "selected_provider": "quickpay",
+    "reason": "only_eligible_provider",
+    "attempts": [
+      {
+        "provider": "vipay",
+        "decision": "skipped",
+        "reason": "bank_not_in_list",
+        "details": "bank raiffeisen не в banks"
+      },
+      {
+        "provider": "payflow",
+        "decision": "skipped",
+        "reason": "daily_limit_exceeded",
+        "details": "2999400 + 30000 > 3000000"
+      },
+      {
+        "provider": "quickpay",
+        "decision": "selected",
+        "reason": "only_eligible_provider",
+        "details": "единственный допустимый внешний провайдер"
+      }
+    ],
+    "simulated_result": "approved",
+    "latency_sec": 29
+  }
+]

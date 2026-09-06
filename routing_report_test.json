@@ -1,0 +1,167 @@
+{
+  "period": "2026-07-30",
+  "gateway": "RUB_SBP_WITHDRAW",
+  "merchant": "alpha_market",
+  "strategy": "weighted",
+  "total_operations": 90,
+  "distribution": {
+    "vipay": {
+      "count": 24,
+      "share_pct": 26.7,
+      "target_pct": 40.0,
+      "deviation_pp": -13.3
+    },
+    "payflow": {
+      "count": 9,
+      "share_pct": 10.0,
+      "target_pct": 35.0,
+      "deviation_pp": -25.0
+    },
+    "quickpay": {
+      "count": 37,
+      "share_pct": 41.1,
+      "target_pct": 25.0,
+      "deviation_pp": 16.1
+    }
+  },
+  "volume_distribution": {
+    "vipay": {
+      "amount": 433500.0,
+      "share_pct": 12.4,
+      "target_pct": 40.0,
+      "deviation_pp": -27.6
+    },
+    "payflow": {
+      "amount": 99400.0,
+      "share_pct": 2.8,
+      "target_pct": 35.0,
+      "deviation_pp": -32.2
+    },
+    "quickpay": {
+      "amount": 1999000.0,
+      "share_pct": 57.2,
+      "target_pct": 25.0,
+      "deviation_pp": 32.2
+    }
+  },
+  "skip_reasons": {
+    "bank_not_in_list": 54,
+    "lower_score": 31,
+    "amount_exceeds_limit": 33,
+    "rejected_by_provider": 21,
+    "amount_below_minimum": 16,
+    "daily_limit_exceeded": 45
+  },
+  "results": {
+    "approved": 90,
+    "rejected": 0,
+    "expired": 0,
+    "approval_rate_pct": 100.0,
+    "by_provider": {
+      "payflow": {
+        "approved": 9
+      },
+      "vipay": {
+        "approved": 24
+      },
+      "quickpay": {
+        "approved": 37
+      },
+      "spacepayments": {
+        "approved": 20
+      }
+    }
+  },
+  "reliability": {
+    "vipay": {
+      "value": 0.891,
+      "baseline": 0.78,
+      "source": "history",
+      "observations": 41
+    },
+    "payflow": {
+      "value": 0.929,
+      "baseline": 0.474,
+      "source": "history",
+      "observations": 19
+    },
+    "quickpay": {
+      "value": 0.75,
+      "baseline": 0.675,
+      "source": "history",
+      "observations": 40
+    },
+    "spacepayments": {
+      "value": 0.999,
+      "baseline": 0.95,
+      "source": "conversion_24h",
+      "observations": null
+    }
+  },
+  "projected_daily_utilization": {
+    "vipay": {
+      "used": 3633500,
+      "limit": 5000000,
+      "utilization_pct": 72.7,
+      "in_progress_count": 4,
+      "in_progress_count_limit": 10,
+      "in_progress_amount": 380000.0,
+      "in_progress_amount_limit": 1000000,
+      "available_requisites": 12
+    },
+    "payflow": {
+      "used": 2999400,
+      "limit": 3000000,
+      "utilization_pct": 100.0,
+      "in_progress_count": 2,
+      "in_progress_count_limit": 8,
+      "in_progress_amount": 120000.0,
+      "in_progress_amount_limit": 500000,
+      "available_requisites": 5
+    },
+    "quickpay": {
+      "used": 3099000,
+      "limit": 8000000,
+      "utilization_pct": 38.7,
+      "in_progress_count": 1,
+      "in_progress_count_limit": 15,
+      "in_progress_amount": 50000.0,
+      "in_progress_amount_limit": 2000000,
+      "available_requisites": 20
+    }
+  },
+  "recommendations": [
+    "vipay: недобор доли (share 26.7% < target 40%) — увеличить traffic_percentage или снизить priority",
+    "payflow: лимит исчерпан на 100.0% (3.0M/3.0M ₽) — рекомендуется увеличить daily_amount_limit до 4.3M ₽ (+43%), чтобы предотвратить уход 50% операций в каскад",
+    "quickpay: доля по объёму 57.2% сильно выше целевой 25% — пересмотреть amount_range_min/max или volume_share_pct",
+    "quickpay: факт-доля 41.1% выше цели 25% — пересмотреть target_pct",
+    "vipay: цель 40% недостижима при текущих ограничениях (доступен в 31/90 = 34.4%) — пересмотреть лимиты/banks или снизить traffic_percentage",
+    "payflow: цель 35% недостижима при текущих ограничениях (доступен в 9/90 = 10.0%) — пересмотреть лимиты/banks или снизить traffic_percentage"
+  ],
+  "unachieved_goals": [
+    {
+      "provider": "vipay",
+      "target_pct": 40.0,
+      "eligible_operations": 31,
+      "total_operations": 90,
+      "achievable_share_pct": 34.4,
+      "skip_reasons": {
+        "bank_not_in_list": 41,
+        "amount_below_minimum": 8,
+        "amount_exceeds_limit": 10
+      }
+    },
+    {
+      "provider": "payflow",
+      "target_pct": 35.0,
+      "eligible_operations": 9,
+      "total_operations": 90,
+      "achievable_share_pct": 10.0,
+      "skip_reasons": {
+        "bank_not_in_list": 13,
+        "amount_exceeds_limit": 23,
+        "daily_limit_exceeded": 45
+      }
+    }
+  ]
+}

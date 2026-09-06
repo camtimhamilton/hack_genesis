@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>RUB_SBP_WITHDRAW · Routing Report · 2026-07-30</title>
+  <style>
+  :root {
+    --bg: #0d1117;
+    --panel: #161b22;
+    --panel-2: #1c2128;
+    --border: #30363d;
+    --text: #e6edf3;
+    --muted: #8b949e;
+    --accent: #58a6ff;
+    --green: #3fb950;
+    --red: #f85149;
+    --amber: #d29922;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font: 15px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  .hero {
+    padding: 40px 48px 32px;
+    background: linear-gradient(180deg, #1b2a41 0%, var(--bg) 100%);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+  .eyebrow { margin: 0; color: var(--accent); text-transform: uppercase; letter-spacing: .12em; font-size: 12px; }
+  h1 { margin: 8px 0 4px; font-size: 30px; }
+  .subtitle { margin: 0; color: var(--muted); }
+  .meta { display: grid; grid-template-columns: repeat(2, minmax(160px, auto)); gap: 12px 28px; margin: 0; }
+  .meta dt { color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: .08em; }
+  .meta dd { margin: 2px 0 0; font-weight: 600; }
+  main { max-width: 1100px; margin: 0 auto; padding: 32px 24px 64px; }
+  section { margin-bottom: 44px; }
+  .section-title {
+    font-size: 20px;
+    margin: 0 0 18px;
+    padding-left: 12px;
+    border-left: 4px solid var(--accent);
+  }
+  .kpi-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 14px; }
+  .kpi-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px 16px;
+  }
+  .kpi-label { margin: 0; color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: .08em; }
+  .kpi-value { margin: 6px 0 2px; font-size: 30px; font-weight: 700; color: var(--text); }
+  .kpi-hint { margin: 0; color: var(--muted); font-size: 12px; }
+  .table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 10px; background: var(--panel); }
+  table { border-collapse: collapse; width: 100%; min-width: 560px; }
+  th, td { padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--border); }
+  th { color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: .06em; background: var(--panel-2); }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr:hover { background: var(--panel-2); }
+  .mono { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace; }
+  .pos { color: var(--green); }
+  .neg { color: var(--red); }
+  .ok { color: var(--muted); }
+  .warn { color: var(--amber); font-weight: 700; }
+  .chart { width: 100%; height: auto; display: block; background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 8px; }
+  .svglabel { fill: var(--muted); font-size: 12px; }
+  .track { fill: #21262d; }
+  .bar { fill: var(--accent); }
+  .bar-dim { fill: #37475a; }
+  .bar-warn { fill: var(--amber); }
+  .target { stroke: var(--green); stroke-width: 2; stroke-dasharray: 4 3; }
+  .legend { color: var(--muted); font-size: 12px; margin: 8px 2px 14px; }
+  ul.recommendations { list-style: none; padding: 0; margin: 0; }
+  ul.recommendations li {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--amber);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-bottom: 10px;
+  }
+  footer { border-top: 1px solid var(--border); color: var(--muted); text-align: center; padding: 24px; font-size: 13px; }
+  section.collapsed > *:not(.section-title) { display: none; }
+  button.toggle {
+    background: none; border: none; cursor: pointer;
+    color: var(--accent); font-size: 13px; padding: 0; margin-left: 10px;
+  }
+  button.toggle:hover { text-decoration: underline; }
+  @media (max-width: 720px) {
+    .hero { padding: 28px 20px 24px; }
+    .meta { grid-template-columns: 1fr; }
+    main { padding: 20px 14px 48px; }
+  }
+</style>
+
+</head>
+<body>
+  <header class="hero">
+  <div>
+    <p class="eyebrow">Smart Payout Routing</p>
+    <h1>Routing Report</h1>
+    <p class="subtitle">Автономный аналитический отчёт по маршрутизации выплат</p>
+  </div>
+  <dl class="meta">
+    <div><dt>Gateway</dt><dd>RUB_SBP_WITHDRAW</dd></div>
+    <div><dt>Merchant</dt><dd>alpha_market</dd></div>
+    <div><dt>Период</dt><dd>2026-07-30</dd></div>
+    <div><dt>Стратегия</dt><dd>weighted</dd></div>
+  </dl>
+</header>
+
+  <main>
+    <section>
+  <h2 class="section-title">Ключевые показатели</h2>
+  <div class="kpi-grid">
+    <article class="kpi-card">
+  <p class="kpi-label">Всего операций</p>
+  <p class="kpi-value">90</p>
+  <p class="kpi-hint">заявки очереди</p>
+</article>
+
+    <article class="kpi-card">
+  <p class="kpi-label">Approval rate</p>
+  <p class="kpi-value">100.0%</p>
+  <p class="kpi-hint">доля approved</p>
+</article>
+
+    <article class="kpi-card">
+  <p class="kpi-label">Approved</p>
+  <p class="kpi-value">90</p>
+  <p class="kpi-hint">успешно завершено</p>
+</article>
+
+    <article class="kpi-card">
+  <p class="kpi-label">Rejected</p>
+  <p class="kpi-value">0</p>
+  <p class="kpi-hint">отказы провайдеров</p>
+</article>
+
+    <article class="kpi-card">
+  <p class="kpi-label">Expired</p>
+  <p class="kpi-value">0</p>
+  <p class="kpi-hint">таймауты</p>
+</article>
+
+    <article class="kpi-card">
+  <p class="kpi-label">Провайдеры</p>
+  <p class="kpi-value">3</p>
+  <p class="kpi-hint">в распределении</p>
+</article>
+
+  </div>
+</section>
+
+    <section>
+  <h2 class="section-title">Распределение по количеству операций</h2>
+  <svg viewBox="0 0 720 208" role="img" aria-label="share_pct против target_pct" class="chart">
+  <text x="112" y="27" text-anchor="end" class="svglabel">vipay</text>
+        <rect x="130" y="12" width="500" height="18" rx="3" class="track"></rect>
+        <rect x="130" y="12" width="324.8" height="18" rx="3" class="bar"></rect>
+        <line x1="616.6" y1="8" x2="616.6" y2="34" class="target"></line>
+        <text x="460.8" y="26" class="svglabel">26.7%</text>
+        <text x="112" y="83" text-anchor="end" class="svglabel">payflow</text>
+        <rect x="130" y="68" width="500" height="18" rx="3" class="track"></rect>
+        <rect x="130" y="68" width="121.7" height="18" rx="3" class="bar"></rect>
+        <line x1="555.8" y1="64" x2="555.8" y2="90" class="target"></line>
+        <text x="257.7" y="82" class="svglabel">10.0%</text>
+        <text x="112" y="139" text-anchor="end" class="svglabel">quickpay</text>
+        <rect x="130" y="124" width="500" height="18" rx="3" class="track"></rect>
+        <rect x="130" y="124" width="500.0" height="18" rx="3" class="bar"></rect>
+        <line x1="434.1" y1="120" x2="434.1" y2="146" class="target"></line>
+        <text x="636.0" y="138" class="svglabel">41.1%</text>
+</svg>
+<p class="legend">Столбец — фактическая доля · вертикальная линия — целевая доля · единицы: %</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Провайдер</th><th>Count</th><th>Share</th><th>Target</th><th>Отклонение</th></tr>
+      </thead>
+      <tbody><tr>
+  <td class="mono">vipay</td>
+  <td>24</td>
+  <td>26.7%</td>
+  <td>40.0%</td>
+  <td class="neg">-13.3 п.п.</td>
+</tr>
+
+<tr>
+  <td class="mono">payflow</td>
+  <td>9</td>
+  <td>10.0%</td>
+  <td>35.0%</td>
+  <td class="neg">-25.0 п.п.</td>
+</tr>
+
+<tr>
+  <td class="mono">quickpay</td>
+  <td>37</td>
+  <td>41.1%</td>
+  <td>25.0%</td>
+  <td class="pos">+16.1 п.п.</td>
+</tr>
+</tbody>
+    </table>
+  </div>
+</section>
+
+    <section>
+  <h2 class="section-title">Распределение по объёму</h2>
+  <svg viewBox="0 0 720 208" role="img" aria-label="share_pct против target_pct (объём)" class="chart">
+  <text x="112" y="27" text-anchor="end" class="svglabel">vipay</text>
+        <rect x="130" y="12" width="500" height="18" rx="3" class="track"></rect>
+        <rect x="130" y="12" width="108.4" height="18" rx="3" class="bar"></rect>
+        <line x1="479.7" y1="8" x2="479.7" y2="34" class="target"></line>
+        <text x="244.4" y="26" class="svglabel">12.4%</text>
+        <text x="112" y="83" text-anchor="end" class="svglabel">payflow</text>
+        <rect x="130" y="68" width="500" height="18" rx="3" class="track"></rect>
+        <rect x="130" y="68" width="24.5" height="18" rx="3" class="bar"></rect>
+        <line x1="435.9" y1="64" x2="435.9" y2="90" class="target"></line>
+        <text x="160.5" y="82" class="svglabel">2.8%</text>
+        <text x="112" y="139" text-anchor="end" class="svglabel">quickpay</text>
+        <rect x="130" y="124" width="500" height="18" rx="3" class="track"></rect>
+        <rect x="130" y="124" width="500.0" height="18" rx="3" class="bar"></rect>
+        <line x1="348.5" y1="120" x2="348.5" y2="146" class="target"></line>
+        <text x="636.0" y="138" class="svglabel">57.2%</text>
+</svg>
+<p class="legend">Столбец — фактическая доля · вертикальная линия — целевая доля · единицы: %</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Провайдер</th><th>Сумма</th><th>Share</th><th>Target</th><th>Отклонение</th></tr>
+      </thead>
+      <tbody><tr>
+  <td class="mono">vipay</td>
+  <td>433 500</td>
+  <td>12.4%</td>
+  <td>40.0%</td>
+  <td class="neg">-27.6 п.п.</td>
+</tr>
+
+<tr>
+  <td class="mono">payflow</td>
+  <td>99 400</td>
+  <td>2.8%</td>
+  <td>35.0%</td>
+  <td class="neg">-32.2 п.п.</td>
+</tr>
+
+<tr>
+  <td class="mono">quickpay</td>
+  <td>1 999 000</td>
+  <td>57.2%</td>
+  <td>25.0%</td>
+  <td class="pos">+32.2 п.п.</td>
+</tr>
+</tbody>
+    </table>
+  </div>
+</section>
+
+    <section>
+  <h2 class="section-title">Динамическая надёжность провайдеров</h2>
+  <svg viewBox="0 0 720 264" role="img" aria-label="reliability value vs baseline" class="chart">
+  <text x="112" y="27" text-anchor="end" class="svglabel">vipay</text>
+        <rect x="130" y="12" width="500" height="18" rx="3" class="track"></rect>
+        <rect x="130" y="12" width="390.0" height="18" rx="3" class="bar-dim"></rect>
+        <rect x="130" y="12" width="445.5" height="18" rx="3" class="bar"></rect>
+        <text x="581.5" y="26" class="svglabel">0.891</text>
+        <text x="112" y="83" text-anchor="end" class="svglabel">payflow</text>
+        <rect x="130" y="68" width="500" height="18" rx="3" class="track"></rect>
+        <rect x="130" y="68" width="237.0" height="18" rx="3" class="bar-dim"></rect>
+        <rect x="130" y="68" width="464.5" height="18" rx="3" class="bar"></rect>
+        <text x="600.5" y="82" class="svglabel">0.929</text>
+        <text x="112" y="139" text-anchor="end" class="svglabel">quickpay</text>
+        <rect x="130" y="124" width="500" height="18" rx="3" class="track"></rect>
+        <rect x="130" y="124" width="337.5" height="18" rx="3" class="bar-dim"></rect>
+        <rect x="130" y="124" width="375.0" height="18" rx="3" class="bar"></rect>
+        <text x="511.0" y="138" class="svglabel">0.750</text>
+        <text x="112" y="195" text-anchor="end" class="svglabel">spacepayments</text>
+        <rect x="130" y="180" width="500" height="18" rx="3" class="track"></rect>
+        <rect x="130" y="180" width="475.0" height="18" rx="3" class="bar-dim"></rect>
+        <rect x="130" y="180" width="499.5" height="18" rx="3" class="bar"></rect>
+        <text x="635.5" y="194" class="svglabel">0.999</text>
+</svg>
+<p class="legend">Яркий столбец — текущая надёжность · тусклый — baseline · шкала 0..1</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Провайдер</th><th>Значение</th><th>Baseline</th><th>Источник</th><th>Наблюдения</th></tr>
+      </thead>
+      <tbody><tr>
+  <td class="mono">vipay</td>
+  <td>0.891</td>
+  <td>0.780</td>
+  <td>history</td>
+  <td>41</td>
+</tr>
+
+<tr>
+  <td class="mono">payflow</td>
+  <td>0.929</td>
+  <td>0.474</td>
+  <td>history</td>
+  <td>19</td>
+</tr>
+
+<tr>
+  <td class="mono">quickpay</td>
+  <td>0.750</td>
+  <td>0.675</td>
+  <td>history</td>
+  <td>40</td>
+</tr>
+
+<tr>
+  <td class="mono">spacepayments</td>
+  <td>0.999</td>
+  <td>0.950</td>
+  <td>conversion_24h</td>
+  <td>—</td>
+</tr>
+</tbody>
+    </table>
+  </div>
+</section>
+
+    <section>
+  <h2 class="section-title">Причины пропуска (skip_reasons)</h2>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Reason</th><th>Количество</th><th>Доля</th></tr>
+      </thead>
+      <tbody><tr>
+  <td class="mono">bank_not_in_list</td>
+  <td>54</td>
+  <td>27.0%</td>
+</tr>
+
+<tr>
+  <td class="mono">daily_limit_exceeded</td>
+  <td>45</td>
+  <td>22.5%</td>
+</tr>
+
+<tr>
+  <td class="mono">amount_exceeds_limit</td>
+  <td>33</td>
+  <td>16.5%</td>
+</tr>
+
+<tr>
+  <td class="mono">lower_score</td>
+  <td>31</td>
+  <td>15.5%</td>
+</tr>
+
+<tr>
+  <td class="mono">rejected_by_provider</td>
+  <td>21</td>
+  <td>10.5%</td>
+</tr>
+
+<tr>
+  <td class="mono">amount_below_minimum</td>
+  <td>16</td>
+  <td>8.0%</td>
+</tr>
+</tbody>
+    </table>
+  </div>
+</section>
+
+    <section>
+  <h2 class="section-title">Использование дневных лимитов</h2>
+  <svg viewBox="0 0 720 208" role="img" aria-label="daily limit utilization" class="chart">
+  <text x="112" y="27" text-anchor="end" class="svglabel">vipay</text>
+        <rect x="130" y="12" width="500" height="18" rx="3" class="track"></rect>
+        <rect x="130" y="12" width="363.5" height="18" rx="3" class="bar-warn"></rect>
+        <text x="499.5" y="26" class="svglabel">72.7%</text>
+        <text x="112" y="83" text-anchor="end" class="svglabel">payflow</text>
+        <rect x="130" y="68" width="500" height="18" rx="3" class="track"></rect>
+        <rect x="130" y="68" width="500.0" height="18" rx="3" class="bar-warn"></rect>
+        <text x="636.0" y="82" class="svglabel">100.0%</text>
+        <text x="112" y="139" text-anchor="end" class="svglabel">quickpay</text>
+        <rect x="130" y="124" width="500" height="18" rx="3" class="track"></rect>
+        <rect x="130" y="124" width="193.5" height="18" rx="3" class="bar-warn"></rect>
+        <text x="329.5" y="138" class="svglabel">38.7%</text>
+</svg>
+<p class="legend">Доля использованного дневного лимита (0..100%; ∞ = без лимита)</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Провайдер</th><th>Used</th><th>Limit</th><th>Util</th><th>In-progress (count)</th><th>In-progress (amount)</th><th>Реквизиты</th></tr>
+      </thead>
+      <tbody><tr>
+  <td class="mono">vipay</td>
+  <td>3 633 500</td>
+  <td>5 000 000</td>
+  <td class="ok">72.7%</td>
+  <td>4 / 10</td>
+  <td>380 000 / 1 000 000</td>
+  <td>12</td>
+</tr>
+
+<tr>
+  <td class="mono">payflow</td>
+  <td>2 999 400</td>
+  <td>3 000 000</td>
+  <td class="warn">100.0%</td>
+  <td>2 / 8</td>
+  <td>120 000 / 500 000</td>
+  <td>5</td>
+</tr>
+
+<tr>
+  <td class="mono">quickpay</td>
+  <td>3 099 000</td>
+  <td>8 000 000</td>
+  <td class="ok">38.7%</td>
+  <td>1 / 15</td>
+  <td>50 000 / 2 000 000</td>
+  <td>20</td>
+</tr>
+</tbody>
+    </table>
+  </div>
+</section>
+
+    <section>
+  <h2 class="section-title">Результаты по провайдерам</h2>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Провайдер</th><th>Approved</th><th>Rejected</th><th>Expired</th></tr>
+      </thead>
+      <tbody><tr>
+  <td class="mono">payflow</td>
+  <td>9</td>
+  <td>0</td>
+  <td>0</td>
+</tr>
+
+<tr>
+  <td class="mono">vipay</td>
+  <td>24</td>
+  <td>0</td>
+  <td>0</td>
+</tr>
+
+<tr>
+  <td class="mono">quickpay</td>
+  <td>37</td>
+  <td>0</td>
+  <td>0</td>
+</tr>
+
+<tr>
+  <td class="mono">spacepayments</td>
+  <td>20</td>
+  <td>0</td>
+  <td>0</td>
+</tr>
+</tbody>
+    </table>
+  </div>
+</section>
+
+    <section>
+  <h2 class="section-title">Рекомендации</h2>
+  <ul class="recommendations"><li>vipay: недобор доли (share 26.7% &lt; target 40%) — увеличить traffic_percentage или снизить priority</li>
+<li>payflow: лимит исчерпан на 100.0% (3.0M/3.0M ₽) — рекомендуется увеличить daily_amount_limit до 4.3M ₽ (+43%), чтобы предотвратить уход 50% операций в каскад</li>
+<li>quickpay: доля по объёму 57.2% сильно выше целевой 25% — пересмотреть amount_range_min/max или volume_share_pct</li>
+<li>quickpay: факт-доля 41.1% выше цели 25% — пересмотреть target_pct</li>
+<li>vipay: цель 40% недостижима при текущих ограничениях (доступен в 31/90 = 34.4%) — пересмотреть лимиты/banks или снизить traffic_percentage</li>
+<li>payflow: цель 35% недостижима при текущих ограничениях (доступен в 9/90 = 10.0%) — пересмотреть лимиты/banks или снизить traffic_percentage</li></ul>
+</section>
+
+    <section>
+  <h2 class="section-title">Недостижимые цели</h2>
+  <ul class="recommendations"><li>
+  <span class="mono">vipay</span> — цель 40.0%,
+  достижимо 34.4%
+  (31/90 операций доступно).
+  Причины hard-skip: bank_not_in_list ×41, amount_below_minimum ×8, amount_exceeds_limit ×10.
+</li>
+
+<li>
+  <span class="mono">payflow</span> — цель 35.0%,
+  достижимо 10.0%
+  (9/90 операций доступно).
+  Причины hard-skip: bank_not_in_list ×13, amount_exceeds_limit ×23, daily_limit_exceeded ×45.
+</li>
+</ul>
+</section>
+
+  </main>
+  <footer>
+  <p>Сформировано движком роутинга · стратегия weighted ·
+  90 операций(и). Отчёт автономен: 0 внешних ресурсов.</p>
+</footer>
+
+  <script>
+  (function () {
+    var titles = document.querySelectorAll('.section-title');
+    titles.forEach(function (title) {
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'toggle';
+      btn.textContent = 'свернуть';
+      btn.addEventListener('click', function () {
+        var section = title.closest('section');
+        var collapsed = section.classList.toggle('collapsed');
+        btn.textContent = collapsed ? 'развернуть' : 'свернуть';
+      });
+      title.appendChild(btn);
+    });
+  })();
+</script>
+
+</body>
+</html>

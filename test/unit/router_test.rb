@@ -65,7 +65,7 @@ class RouterTest < Minitest::Test
     ctx = RoutingContext.new
     router.route(fixture_op('amount' => 1000), ctx)
     assert_equal 1000, vipay.daily_approved_amount
-    assert_equal 9, vipay.available_requisites
+    assert_equal 10, vipay.available_requisites
     assert_equal 1, ctx.counts['vipay']
     assert_equal 1000.0, ctx.volumes['vipay']
   end

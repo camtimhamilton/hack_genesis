@@ -20,7 +20,7 @@
 require 'json'
 
 DATA_DIR = File.expand_path('../data', __dir__)
-DEFAULT_QUEUE_FILENAME = 'operations_queue_test.json'
+DEFAULT_QUEUE_FILENAME = 'operations_queue_90.json'
 
 def load_json(filename)
   JSON.parse(File.read(File.join(DATA_DIR, filename)))

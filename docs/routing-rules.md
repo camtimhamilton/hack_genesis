@@ -70,7 +70,7 @@
 ## Stateful-обновление
 
 После каждой `approved` операции у выбранного провайдера обновляются:
-`daily_approved_amount`, `available_requisites`, счётчики `requests_per_minute`
+`daily_approved_amount`, счётчики `requests_per_minute`
 и накопленные факт-доли count/volume (`RoutingContext`).
 
 После каждой операции обновляется динамическая надёжность `reliability` (0..1)

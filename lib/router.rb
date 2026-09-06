@@ -176,7 +176,6 @@ class Router
   def apply_state!(provider, op, ctx)
     amount = op['amount']
     provider.add_approved_amount(amount)
-    provider.reserve_requisite!
     provider.register_request!(parse_time(op['created_at']))
     ctx.record!(provider.payment_system, amount)
   end

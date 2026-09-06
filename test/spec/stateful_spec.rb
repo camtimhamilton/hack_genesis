@@ -12,11 +12,11 @@ describe 'Stateful-обновление (spec.md §5.5)' do
     _(p.daily_approved_amount).must_equal 1500
   end
 
-  it 'уменьшает available_requisites после approved' do
+  it 'не изменяет available_requisites после approved (пул освобождается сразу)' do
     p = fixture_provider('payment_system' => 'vipay', 'available_requisites' => 5)
     router = Router.new([p], simulator: Simulator.new(always_approve: true))
     router.route(fixture_op, RoutingContext.new)
-    _(p.available_requisites).must_equal 4
+    _(p.available_requisites).must_equal 5
   end
 
   it 'ведёт счётчик интенсивности (requests_per_minute)' do
