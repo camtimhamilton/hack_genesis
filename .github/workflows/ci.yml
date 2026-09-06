@@ -20,7 +20,7 @@ jobs:
         run: ruby test/run_all.rb
 
       - name: Generate demo decisions (deterministic)
-        run: ruby src/main.rb --deterministic
+        run: ruby main.rb --deterministic
 
       - name: Validate demo decisions
-        run: ruby src/scripts/validate_10.rb routing_decisions.json
+        run: ruby scripts/validate_10.rb routing_decisions.json

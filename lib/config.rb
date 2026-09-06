@@ -2,7 +2,7 @@
 
 require 'yaml'
 
-# Загрузчик конфигурации правил (src/config/routing.yml).
+# Загрузчик конфигурации правил (config/routing.yml).
 class Config
   def self.load(path = File.expand_path('../config/routing.yml', __dir__))
     new(path)

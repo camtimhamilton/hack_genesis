@@ -2,10 +2,9 @@
 /architecture.md
 /memory.md
 /spec.md
-/SPEECH_NOTES.md
 /todo.md
 
-# Сгенерированные демо-артефакты (пересоздаются: ruby src/main.rb)
+# Сгенерированные демо-артефакты (пересоздаются: ruby main.rb)
 /routing_decisions.json
 /routing_report.json
 /routing_report.html

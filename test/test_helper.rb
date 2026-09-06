@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-# Общий хелпер тестов: подключает ядро из src/lib и предоставляет фабрики
+# Общий хелпер тестов: подключает ядро из lib и предоставляет фабрики
 # провайдеров/операций и тестовые дублёры. Только stdlib (minitest), без gem.
-$LOAD_PATH.unshift(File.expand_path('../src/lib', __dir__))
+$LOAD_PATH.unshift(File.expand_path('../lib', __dir__))
 
 require 'minitest/autorun'
 require 'minitest/spec'

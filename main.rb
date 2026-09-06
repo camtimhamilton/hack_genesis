@@ -12,11 +12,11 @@ require 'reporter'
 require 'html_reporter'
 
 # Корень проекта — сюда пишутся выходные артефакты.
-ROOT = File.expand_path('..', __dir__)
+ROOT = __dir__
 
 USAGE = <<~TEXT
   Использование:
-    ruby src/main.rb [--deterministic] [decisions_path] [report_path] [queue_filename]
+    ruby main.rb [--deterministic] [decisions_path] [report_path] [queue_filename]
 
   Флаги:
     --deterministic, --always-approve
@@ -25,7 +25,7 @@ USAGE = <<~TEXT
   Аргументы (опционально, по умолчанию — демо-очередь):
     decisions_path  путь к routing_decisions.json   (по умолчанию <корень>/routing_decisions.json)
     report_path     путь к routing_report.json      (по умолчанию <корень>/routing_report.json)
-    queue_filename  имя очереди в src/data           (по умолчанию operations_queue_10.json)
+    queue_filename  имя очереди в data               (по умолчанию operations_queue_10.json)
 
   Рядом с JSON-отчётом всегда пишется автономный HTML-отчёт (то же имя, .html),
   полностью офлайн (inline CSS/JS/SVG, без CDN). JSON остаётся обязательным артефактом.
@@ -34,8 +34,8 @@ USAGE = <<~TEXT
   иначе rejected → каскад на следующего (при пустом пуле — spacepayments).
 
   Примеры:
-    ruby src/main.rb --deterministic
-    ruby src/main.rb routing_decisions_test.json routing_report_test.json operations_queue_test.json
+    ruby main.rb --deterministic
+    ruby main.rb routing_decisions_test.json routing_report_test.json operations_queue_test.json
 TEXT
 
 def main

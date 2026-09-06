@@ -1,7 +1,7 @@
 # Правила роутинга
 
 Правила делятся на **hard-constraints** (допуск) и **soft-goals** (ранжирование).
-Параметры задаются в `src/config/routing.yml` и в `src/data/providers.json`.
+Параметры задаются в `config/routing.yml` и в `data/providers.json`.
 
 ## Hard-constraints
 

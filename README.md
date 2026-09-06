@@ -24,27 +24,51 @@ flowchart TD
     FB -->|"approved"| SU
 ```
 
+### Жизненный цикл операции (Execution Flow)
+
+Поток данных одной операции — слева направо:
+
+```mermaid
+flowchart LR
+    IN["Input<br/>operations_queue_10.json<br/>providers.json<br/>config/routing.yml"] --> HF["HardFilter<br/>9 hard-constraints"]
+    HF -->|"eligible pool"| SC["Scorer<br/>score = Σ weight × signal"]
+    SC -->|"ranked"| SM["Simulator / Cascading<br/>conversion_24h → approved / rejected"]
+    SM -->|"rejected → следующий"| SC
+    SM -->|"approved"| SU["StateUpdate<br/>daily_approved_amount · requisites<br/>reliability (EWMA)"]
+    SU -->|"reliability → скоринг"| SC
+    SU --> REP["Report<br/>routing_decisions.json<br/>routing_report.json (+ .html)"]
+    SM -.->|"пустой пул"| FB["spacepayments<br/>self-provider fallback"]
+    FB --> SU
+```
+
+1. **Input** — очередь операций, снимок провайдеров и конфиг правил.
+2. **HardFilter** — допуск: жёсткие ограничения отсеивают недопустимых → eligible pool.
+3. **Scorer** — ранжирование допущенных по взвешенной сумме soft-сигналов.
+4. **Simulator / Cascading** — попытка проведения; при `rejected`/`expired` — каскад на следующего по рангу, при пустом пуле — `spacepayments`.
+5. **StateUpdate** — обновление stateful-метрик и динамической надёжности (EWMA).
+6. **Report** — аналитика, утилизация лимитов и рекомендации (JSON + автономный HTML).
+
 ## Запуск (одна строка)
 
 ```bash
-ruby src/main.rb                                                                            # демо → routing_decisions.json + routing_report.json (+ .html)
-ruby src/main.rb --deterministic && ruby src/scripts/validate_10.rb routing_decisions.json  # инвариант: валидация демо (exit 0)
-ruby test/run_all.rb                                                                        # unit + spec (minitest, stdlib)
-ruby src/scripts/stress_test.rb                                                             # стресс-тест 10 000 операций
-ruby src/scripts/chaos_test.rb                                                              # хаос-тест 1 000 операций (инъекция сбоев)
+ruby main.rb                                                                       # демо → routing_decisions.json + routing_report.json (+ .html)
+ruby main.rb --deterministic && ruby scripts/validate_10.rb routing_decisions.json # инвариант: валидация демо (exit 0)
+ruby test/run_all.rb                                                               # unit + spec (minitest, stdlib)
+ruby scripts/stress_test.rb                                                        # стресс-тест 10 000 операций
+ruby scripts/chaos_test.rb                                                         # хаос-тест 1 000 операций (инъекция сбоев)
 ```
 
 ## Финал (тестовая очередь)
 
 
 ```bash
-ruby src/main.rb routing_decisions_test.json routing_report_test.json operations_queue_test.json
+ruby main.rb routing_decisions_test.json routing_report_test.json operations_queue_test.json
 ```
 
 Затем проверьте решения валидатором тестовой очереди:
 
 ```bash
-ruby src/scripts/validate_test.rb routing_decisions_test.json
+ruby scripts/validate_test.rb routing_decisions_test.json
 ```
 
 Артефакты появятся в корне репозитория (ветка `main`) с точными именами:
@@ -78,7 +102,7 @@ SVG-графики, таблицы и рекомендации; полность
 
 ## Хаос-тест: 1 000 операций с инъекцией сбоев (Chaos Engineering)
 
-`ruby src/scripts/chaos_test.rb` ломает систему на ходу и доказывает устойчивость:
+`ruby scripts/chaos_test.rb` ломает систему на ходу и доказывает устойчивость:
 
 - **оп 250** — `vipay` падает (`conversion_24h → 0`, шлюз отказывает);
 - **оп 600** — у `payflow` обнуляются `available_requisites`.
@@ -105,34 +129,33 @@ CI (GitHub Actions) прогоняет тесты и валидатор `validat
 ## Структура проекта
 
 ```
-src/
-├── main.rb               # точка входа: очередь → routing_decisions.json + routing_report.json
-├── config/
-│   └── routing.yml       # веса стратегий, диапазоны сумм, доопределяемые поля
-├── lib/
-│   ├── loader.rb         # чтение входных данных
-│   ├── provider.rb       # модель провайдера + stateful-метрики
-│   ├── hard_filter.rb    # hard-constraints → [ok, reason, details]
-│   ├── scorer.rb         # взвешенный скоринг
-│   ├── strategies/       # 8 стратегий-плагинов (count_share, volume_share, …, reliability)
-│   ├── router.rb         # оркестрация: выбор + fallback
-│   ├── simulator.rb      # вероятностный результат по conversion_24h
-│   ├── routing_context.rb# накопление факт-долей count/volume
-│   └── reporter.rb       # аналитика + рекомендации
-│   └── html_reporter.rb  # автономный HTML-отчёт (inline CSS/JS/SVG, офлайн)
-├── data/                 # входные данные кейса
-└── scripts/
-    ├── validate_10.rb    # валидатор демо-очереди
-    ├── validate_test.rb  # валидатор финальной тестовой очереди
-    ├── test_fallback.rb  # сценарии каскадирования
-    ├── stress_test.rb    # стресс-тест 10 000 операций
-    └── chaos_test.rb     # хаос-тест 1 000 операций (инъекция сбоев)
+main.rb                  # точка входа: очередь → routing_decisions.json + routing_report.json
+config/
+└── routing.yml          # веса стратегий, диапазоны сумм, доопределяемые поля
+lib/
+├── loader.rb            # чтение входных данных
+├── provider.rb          # модель провайдера + stateful-метрики
+├── hard_filter.rb       # hard-constraints → [ok, reason, details]
+├── scorer.rb            # взвешенный скоринг
+├── strategies/          # 8 стратегий-плагинов (count_share, volume_share, …, reliability)
+├── router.rb            # оркестрация: выбор + fallback
+├── simulator.rb         # вероятностный результат по conversion_24h
+├── routing_context.rb   # накопление факт-долей count/volume
+├── reporter.rb          # аналитика + рекомендации
+└── html_reporter.rb     # автономный HTML-отчёт (inline CSS/JS/SVG, офлайн)
+data/                    # входные данные кейса
+scripts/
+├── validate_10.rb       # валидатор демо-очереди
+├── validate_test.rb     # валидатор финальной тестовой очереди
+├── test_fallback.rb     # сценарии каскадирования
+├── stress_test.rb       # стресс-тест 10 000 операций
+└── chaos_test.rb        # хаос-тест 1 000 операций (инъекция сбоев)
 test/
-├── run_all.rb            # единый раннер всех тестов (minitest, stdlib)
-├── unit/                 # unit-тесты (Minitest::Test)
-└── spec/                 # spec-тесты (Minitest::Spec, describe/it)
-docs/                     # архитектура, правила, формат, тестирование
-.github/workflows/ci.yml  # CI: тесты + валидатор
+├── run_all.rb           # единый раннер всех тестов (minitest, stdlib)
+├── unit/                # unit-тесты (Minitest::Test)
+└── spec/                # spec-тесты (Minitest::Spec, describe/it)
+docs/                    # архитектура, правила, формат, тестирование
+.github/workflows/ci.yml # CI: тесты + валидатор
 ```
 
 ## Почему Clean Architecture

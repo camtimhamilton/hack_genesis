@@ -4,7 +4,7 @@ require 'json'
 require 'csv'
 require_relative 'provider'
 
-# Загрузчик входных данных из src/data.
+# Загрузчик входных данных из data/.
 class Loader
   class DataError < StandardError; end
 

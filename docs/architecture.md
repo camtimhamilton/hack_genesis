@@ -10,7 +10,7 @@
   провайдера; мягкие цели ранжируют уже допущенных.
 - **Стратегии как плагины.** Единый интерфейс `score(provider, op, ctx)` — новый
   фактор = новый файл в `lib/strategies/`.
-- **Правила в конфиге.** Веса и параметры — в `src/config/routing.yml`, без
+- **Правила в конфиге.** Веса и параметры — в `config/routing.yml`, без
   правки кода.
 - **Объяснимость.** Каждый шаг (hard-отсев, скоринг, fallback) фиксируется в
   `attempts`.
@@ -32,17 +32,17 @@
 
 | Модуль | Файл | Ответственность |
 | --- | --- | --- |
-| Loader | `src/lib/loader.rb` | чтение входных данных |
-| Provider | `src/lib/provider.rb` | модель провайдера, stateful-метрики |
-| HardFilter | `src/lib/hard_filter.rb` | hard-constraints → `[ok, reason]` |
-| Scorer | `src/lib/scorer.rb` | взвешенный скоринг, согласование факторов |
-| Strategies | `src/lib/strategies/*.rb` | по одной стратегии на файл |
-| Router | `src/lib/router.rb` | оркестрация: выбор + fallback + attempts |
-| Simulator | `src/lib/simulator.rb` | `approved`/`rejected`/`expired`, latency |
-| RoutingContext | `src/lib/routing_context.rb` | накопленные факт-доли count/volume |
-| Reporter | `src/lib/reporter.rb` | аналитика + рекомендации |
-| Config | `src/lib/config.rb` | загрузка `config/routing.yml` |
-| CLI | `src/main.rb` | вход → `routing_decisions*.json` + `routing_report*.json` |
+| Loader | `lib/loader.rb` | чтение входных данных |
+| Provider | `lib/provider.rb` | модель провайдера, stateful-метрики |
+| HardFilter | `lib/hard_filter.rb` | hard-constraints → `[ok, reason]` |
+| Scorer | `lib/scorer.rb` | взвешенный скоринг, согласование факторов |
+| Strategies | `lib/strategies/*.rb` | по одной стратегии на файл |
+| Router | `lib/router.rb` | оркестрация: выбор + fallback + attempts |
+| Simulator | `lib/simulator.rb` | `approved`/`rejected`/`expired`, latency |
+| RoutingContext | `lib/routing_context.rb` | накопленные факт-доли count/volume |
+| Reporter | `lib/reporter.rb` | аналитика + рекомендации |
+| Config | `lib/config.rb` | загрузка `config/routing.yml` |
+| CLI | `main.rb` | вход → `routing_decisions*.json` + `routing_report*.json` |
 
 ## Скоринг
 

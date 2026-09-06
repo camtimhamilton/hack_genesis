@@ -6,10 +6,20 @@ require_relative 'scorer'
 require_relative 'simulator'
 require_relative 'routing_context'
 
-# Роутер: hard-фильтр → взвешенный скоринг → выбор с fallback.
+# Оркестрирует роутинг одной операции и всей очереди.
+#
+# Конвейер на операцию: HardFilter (допуск) → Scorer (ранжирование) →
+# Simulator (попытка) с каскадом при отказе и fallback на spacepayments при
+# пустом пуле; затем — stateful-обновление и сбор attempts для объяснимости.
 class Router
+  # Платёжная система-фолбэк, на которую уходит трафик при пустом пуле.
   FALLBACK = 'spacepayments'
 
+  # @param providers [Array<Provider>] пул провайдеров.
+  # @param hard_filter [HardFilter] фильтр допуска.
+  # @param scorer [Scorer, nil] скоринг (nil — Scorer.new по умолчанию).
+  # @param simulator [Simulator, nil] симулятор исходов (nil — Simulator.new).
+  # @return [Router]
   def initialize(providers, hard_filter: HardFilter.new, scorer: nil, simulator: nil)
     @providers = providers
     @hard_filter = hard_filter
@@ -17,14 +27,23 @@ class Router
     @simulator = simulator || Simulator.new
   end
 
-  # Обработка очереди с накоплением stateful-метрик. Возвращает [decisions, ctx].
+  # Обрабатывает всю очередь с накоплением stateful-метрик.
+  #
+  # @param queue [Array<Hash>] операции из очереди.
+  # @return [Array(Array<Hash>, RoutingContext)] решения и итоговый контекст.
   def process(queue)
     ctx = RoutingContext.new
     decisions = queue.map { |op| route(op, ctx) }
     [decisions, ctx]
   end
 
-  # Роутинг одной операции (мутирует состояние провайдеров и ctx).
+  # Роутит одну операцию: допуск → ранжирование → попытка с каскадом → fallback.
+  #
+  # Мутирует состояние провайдеров и ctx (stateful-метрики, надёжность).
+  #
+  # @param op [Hash] операция.
+  # @param ctx [RoutingContext] контекст факт-долей.
+  # @return [Hash] decision-hash (operation_id, selected_provider, attempts, ...).
   def route(op, ctx)
     ordered = @providers.sort_by { |p| p.priority.to_i }
     results = ordered.map { |p| [p, *@hard_filter.eligible?(op, p)] }
@@ -72,8 +91,12 @@ class Router
 
   private
 
-  # Попытка проведения операции через провайдера: резервирует in-progress на
+  # Пытается провести операцию через провайдера: резервирует in-progress на
   # время симуляции и освобождает после исхода (spec.md §5.5), даже при ошибке.
+  #
+  # @param provider [Provider] провайдер.
+  # @param op [Hash] операция.
+  # @return [String] исход симуляции (`approved` | `rejected` | `expired`).
   def try_provider(provider, op)
     provider.reserve_in_progress!(op['amount'])
     @simulator.result(provider, op)
@@ -81,6 +104,12 @@ class Router
     provider.release_in_progress!(op['amount'])
   end
 
+  # Определяет reason-код выбора по итогам роутинга.
+  #
+  # @param selected [Provider, nil] выбранный провайдер (nil — пустой пул).
+  # @param external_count [Integer] количество допустимых внешних провайдеров.
+  # @return [String] reason-код из словаря (no_eligible_provider,
+  #   fallback_self_provider, only_eligible_provider, highest_score).
   def selected_reason(selected, external_count)
     return 'no_eligible_provider' if selected.nil?
     return 'fallback_self_provider' if selected.payment_system == FALLBACK
@@ -91,6 +120,15 @@ class Router
   # Объяснимость: для каждого рассмотренного провайдера фиксируем причину.
   # hard-отсев → skip_reason; runtime-отказ → rejected/expired;
   # допущен, но не выбран → lower_score (с указанием score).
+  #
+  # @param results [Array<Array>] кортежи [provider, ok, skip_reason, details].
+  # @param ranked [Array<Array(Provider, Float)>] ранжированный пул.
+  # @param selected [Provider, nil] выбранный провайдер.
+  # @param reason [String] reason-код выбора.
+  # @param rejected [Hash{Provider => String}] провайдеры, отказавшие на попытке.
+  # @param op [Hash] операция.
+  # @param ctx [RoutingContext] контекст.
+  # @return [Array<Hash>] список attempts (selected/skipped с причинами).
   def build_attempts(results, ranked, selected, reason, rejected, op, ctx)
     scores = ranked.to_h { |p, s| [p.payment_system, s] }
 
@@ -115,6 +153,13 @@ class Router
     end
   end
 
+  # Детализация выбора для attempts выбранного провайдера.
+  #
+  # @param provider [Provider] выбранный провайдер.
+  # @param reason [String] reason-код выбора.
+  # @param op [Hash] операция.
+  # @param ctx [RoutingContext] контекст.
+  # @return [String] пояснение выбора (fallback / единственный / разбор score).
   def selection_details(provider, reason, op, ctx)
     return 'fallback: пул допустимых внешних провайдеров пуст' if provider.payment_system == FALLBACK
     return 'единственный допустимый внешний провайдер' if reason == 'only_eligible_provider'
@@ -122,6 +167,12 @@ class Router
     @scorer.explain(provider, op, ctx)
   end
 
+  # Фиксирует stateful-обновление после успешной операции у выбранного провайдера.
+  #
+  # @param provider [Provider] выбранный провайдер.
+  # @param op [Hash] операция.
+  # @param ctx [RoutingContext] контекст факт-долей.
+  # @return [void]
   def apply_state!(provider, op, ctx)
     amount = op['amount']
     provider.add_approved_amount(amount)
@@ -132,11 +183,20 @@ class Router
 
   # Обновление динамической надёжности по исходам: approved → ↑, rejected/expired → ↓.
   # Учитываются и выбранный провайдер, и те, кто отказал/таймаутнул при попытке.
+  #
+  # @param selected [Provider, nil] выбранный провайдер.
+  # @param final_status [String] итоговый исход операции.
+  # @param rejected [Hash{Provider => String}] провайдеры, отказавшие на попытке.
+  # @return [void]
   def apply_reliability!(selected, final_status, rejected)
     rejected.each { |p, status| p.update_reliability!(status) }
     selected.update_reliability!(final_status) if selected
   end
 
+  # Парсит временную метку операции; при невалидном вводе — текущее время.
+  #
+  # @param str [String] ISO8601-строка времени.
+  # @return [Time] распарсенное время (Time.now при ошибке парсинга).
   def parse_time(str)
     Time.parse(str.to_s)
   rescue StandardError

@@ -2,12 +2,25 @@
 
 require 'time'
 
-# Hard-constraints: определяет, может ли провайдер обработать операцию.
-# Возвращает [ok, reason, details]. Логика соответствует eligible_providers
-# из src/scripts/validate_10.rb.
+# Применяет жёсткие ограничения (hard-constraints) к паре «операция × провайдер»
+# и решает, может ли провайдер обработать операцию.
+#
+# Проверки выполняются в порядке из spec.md §5.1 (и повторяют `eligible_providers`
+# из scripts/validate_10.rb): статус, нулевой трафик, диапазон суммы, дневной
+# лимит, in-progress (count/amount), реквизиты, маржа, банковский фильтр и
+# интенсивность запросов (rate-limit).
 class HardFilter
+  # Платёжная система-фолбэк, на которую уходит трафик при пустом пуле.
   FALLBACK = 'spacepayments'
 
+  # Проверяет, может ли провайдер обработать операцию.
+  #
+  # @param op [Hash] операция из очереди (ключи: `amount`, `bank`, `created_at`).
+  # @param provider [Provider] проверяемый провайдер.
+  # @return [Array(Boolean, String, String)] кортеж `[ok, reason, details]`:
+  #   `ok` — допущен ли провайдер; при `false` `reason` содержит код причины
+  #   из словаря (например `amount_exceeds_limit`), а `details` — текстовую
+  #   детализацию для `attempts`.
   def eligible?(op, provider)
     amount = op['amount']
     bank = op['bank']
@@ -70,6 +83,10 @@ class HardFilter
 
   private
 
+  # Парсит временную метку операции; при невалидном вводе — текущее время.
+  #
+  # @param str [String] ISO8601-строка времени.
+  # @return [Time] распарсенное время (Time.now при ошибке парсинга).
   def parse_time(str)
     Time.parse(str.to_s)
   rescue StandardError

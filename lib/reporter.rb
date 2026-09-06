@@ -1,7 +1,10 @@
 # frozen_string_literal: true
 
-# Аналитика по результатам роутинга: доли (count/volume), причины skip,
-# успешность/отказы, использование лимитов и рекомендации по изменению правил.
+# Строит аналитический отчёт по результатам роутинга.
+#
+# Агрегирует доли по количеству и объёму, причины hard-отсевов, успешность/
+# отказы, утилизацию лимитов, динамическую надёжность и формирует рекомендации
+# по изменению правил (конкретные числа, O(1) по времени).
 class Reporter
   HARD_SKIP_REASONS = %w[
     inactive_provider amount_exceeds_limit amount_below_minimum daily_limit_exceeded
@@ -14,6 +17,11 @@ class Reporter
   # Запас ёмкости (headroom), закладываемый в рекомендуемый лимит.
   LIMIT_HEADROOM = 0.30
 
+  # @param period [String, nil] период отчёта (дата снимка, `YYYY-MM-DD`).
+  # @param gateway [String, nil] шлюз.
+  # @param merchant [String, nil] мерчант.
+  # @param strategy [String, nil] активная стратегия скоринга.
+  # @return [Reporter]
   def initialize(period: nil, gateway: nil, merchant: nil, strategy: nil)
     @period = period
     @gateway = gateway
@@ -21,6 +29,14 @@ class Reporter
     @strategy = strategy
   end
 
+  # Собирает полный report-hash (обязательный JSON-артефакт).
+  #
+  # @param decisions [Array<Hash>] решения роутера.
+  # @param providers [Array<Provider>] пул провайдеров.
+  # @param queue [Array<Hash>] операции из очереди.
+  # @return [Hash] отчёт: period, gateway, merchant, strategy, total_operations,
+  #   distribution, volume_distribution, skip_reasons, results, reliability,
+  #   projected_daily_utilization, recommendations, unachieved_goals.
   def build(decisions, providers, queue)
     {
       'period' => @period,
@@ -41,10 +57,20 @@ class Reporter
 
   private
 
+  # Внешние провайдеры (без self-provider fallback spacepayments).
+  #
+  # @param providers [Array<Provider>] пул провайдеров.
+  # @return [Array<Provider>] провайдеры без spacepayments.
   def external_providers(providers)
     providers.reject { |p| p.payment_system == 'spacepayments' }
   end
 
+  # Распределение решений по количеству (count) с отклонением от целевой доли.
+  #
+  # @param decisions [Array<Hash>] решения.
+  # @param providers [Array<Provider>] пул провайдеров.
+  # @return [Hash{String => Hash}] по провайдеру: count, share_pct, target_pct,
+  #   deviation_pp.
   def count_distribution(decisions, providers)
     total = decisions.size
     counts = decisions.group_by { |d| d['selected_provider'] }.transform_values(&:size)
@@ -61,6 +87,13 @@ class Reporter
     end
   end
 
+  # Распределение решений по объёму (суммам) с отклонением от целевой доли.
+  #
+  # @param decisions [Array<Hash>] решения.
+  # @param providers [Array<Provider>] пул провайдеров.
+  # @param queue [Array<Hash>] операции (для суммы по operation_id).
+  # @return [Hash{String => Hash}] по провайдеру: amount, share_pct, target_pct,
+  #   deviation_pp.
   def volume_distribution(decisions, providers, queue)
     amounts = queue.each_with_object({}) { |op, acc| acc[op['operation_id']] = op['amount'].to_f }
     vol = Hash.new(0.0)
@@ -80,6 +113,10 @@ class Reporter
     end
   end
 
+  # Агрегирует частоты причин skip по всем attempts.
+  #
+  # @param decisions [Array<Hash>] решения.
+  # @return [Hash{String => Integer}] reason → количество skipped.
   def skip_reasons(decisions)
     decisions.each_with_object(Hash.new(0)) do |d, acc|
       d['attempts'].each do |a|
@@ -88,6 +125,10 @@ class Reporter
     end
   end
 
+  # Итоги симуляции: счётчики approved/rejected/expired и approval-rate.
+  #
+  # @param decisions [Array<Hash>] решения.
+  # @return [Hash] approved, rejected, expired, approval_rate_pct, by_provider.
   def results(decisions)
     totals = Hash.new(0)
     by_provider = Hash.new { |h, k| h[k] = Hash.new(0) }
@@ -107,6 +148,10 @@ class Reporter
   end
 
   # Динамическая надёжность провайдеров (доп. секция отчёта, этап 6).
+  #
+  # @param providers [Array<Provider>] пул провайдеров.
+  # @return [Hash{String => Hash}] по провайдеру: value, baseline, source,
+  #   observations.
   def reliability_section(providers)
     providers.each_with_object({}) do |p, acc|
       acc[p.payment_system] = {
@@ -118,6 +163,11 @@ class Reporter
     end
   end
 
+  # Проекция дневной утилизации лимитов по внешним провайдерам.
+  #
+  # @param providers [Array<Provider>] пул провайдеров.
+  # @return [Hash{String => Hash}] по провайдеру: used, limit, utilization_pct,
+  #   in-progress-метрики, available_requisites.
   def utilization(providers)
     external_providers(providers).each_with_object({}) do |p, acc|
       limit = p.daily_amount_limit
@@ -135,6 +185,12 @@ class Reporter
     end
   end
 
+  # Формирует список рекомендаций по изменению правил (лимиты, доли, реквизиты).
+  #
+  # @param decisions [Array<Hash>] решения.
+  # @param providers [Array<Provider>] пул провайдеров.
+  # @param queue [Array<Hash>] операции.
+  # @return [Array<String>] текстовые рекомендации.
   def recommendations(decisions, providers, queue)
     recs = []
     counts = decisions.group_by { |d| d['selected_provider'] }.transform_values(&:size)
@@ -188,6 +244,11 @@ class Reporter
   # Цели, которые невозможно выполнить: у провайдера положительная целевая доля,
   # но он исключался hard-ограничениями, поэтому даже 100% доступных операций
   # не дотянут до целевой доли.
+  #
+  # @param decisions [Array<Hash>] решения.
+  # @param providers [Array<Provider>] пул провайдеров.
+  # @return [Array<Hash>] по недостижимой цели: provider, target_pct,
+  #   eligible_operations, total_operations, achievable_share_pct, skip_reasons.
   def unachieved_goals(decisions, providers)
     total = decisions.size
     external_providers(providers).filter_map do |p|
@@ -224,6 +285,12 @@ class Reporter
   # Рекомендация по дневному лимиту с конкретными числами (O(1) по времени):
   # дефицит экстраполируется из текущей утилизации, целевой лимит считается
   # как объём с запасом LIMIT_HEADROOM, доля ухода в каскад — по attempts.
+  #
+  # @param name [String] имя провайдера.
+  # @param provider [Provider] провайдер.
+  # @param decisions [Array<Hash>] решения.
+  # @param total [Integer] общее число операций.
+  # @return [String, nil] рекомендация или nil, если лимит не близок к исчерпанию.
   def limit_recommendation(name, provider, decisions, total)
     limit = provider.daily_amount_limit
     return nil unless limit.to_f.positive?
@@ -250,6 +317,10 @@ class Reporter
   end
 
   # Количество операций, где провайдер был отсечён именно исчерпанием дневного лимита.
+  #
+  # @param decisions [Array<Hash>] решения.
+  # @param name [String] имя провайдера.
+  # @return [Integer] число отсечений по daily_limit_exceeded.
   def limit_cascade_count(decisions, name)
     decisions.count do |d|
       d['attempts'].any? do |a|

@@ -71,6 +71,6 @@ GitHub Actions (`.github/workflows/ci.yml`) прогоняет `test/run_all.rb`
 
 ```bash
 ruby test/run_all.rb
-ruby src/main.rb --deterministic
-ruby src/scripts/validate_10.rb routing_decisions.json
+ruby main.rb --deterministic
+ruby scripts/validate_10.rb routing_decisions.json
 ```
